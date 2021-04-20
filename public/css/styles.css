@@ -1,0 +1,76 @@
+@import "bootstrap.rtl.min.css";
+@import "dropzone.min.css";
+/*@import "sb-admin.css";*/
+/*@import "sb-admin-rtl.css";*/
+@import "plugins/morris.css";
+@import "../font-awesome/css/font-awesome.min.css";
+@import "style_admin_panel.css";
+
+@font-face {
+    font-family: Vazir;
+    src: url('../fonts/Vazir.eot');
+    src: url('../fonts/Vazir.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Vazir.woff') format('woff'),
+    url('../fonts/Vazir.ttf') format('truetype');
+    font-weight: normal;
+}
+
+* {
+    font-family: Vazir;
+}
+
+.color-black {
+    color: black;
+}
+
+.color-white {
+    color: white;
+}
+
+@media (min-width: 768px) {
+    #wrapper {
+        padding-right: 225px;
+        padding-left: 0;
+    }
+
+    .side-nav {
+        right: 0;
+        left: auto;
+    }
+}
+
+/****************User Profile  *********************/
+.user-row {
+    margin-bottom: 14px;
+}
+
+.user-row:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-user {
+    margin: 13px 0;
+    padding: 5px;
+    height: 100%;
+}
+
+.dropdown-user:hover {
+    cursor: pointer;
+}
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+
+
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
+
+.toppad {
+    margin-top: 20px;
+}

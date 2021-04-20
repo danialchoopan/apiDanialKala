@@ -1,0 +1,404 @@
+body {
+    overflow-x: hidden;
+}
+
+.rtl {
+    text-align: right !important;
+}
+
+.cp-btn {
+    border: 2px solid white;
+    color: white;
+    background: transparent;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.cp-btn-white {
+    border: 2px solid white;
+    color: black;
+    background: white;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cp-login-box {
+    visibility: hidden;
+}
+
+#cp-box-background {
+    visibility: hidden;
+}
+
+.cp-background-box {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.cp-form-box {
+    width: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #ADA996;
+    padding: 10px 15px;
+    border: #595b83 3px dashed;
+    border-radius: 5px;
+}
+
+.cp-form-box input {
+    padding: 7px;
+    margin: 7px;
+}
+
+.cp-form-box button {
+    padding: 7px;
+    margin: 7px;
+}
+
+.cp-form-box p {
+    margin: 6px;
+}
+
+.cp-form-box h1 {
+    text-align: center;
+}
+
+.cp-box-loader-ajax {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    visibility: hidden;
+}
+
+.cp-container-validate-sms-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loader-15 {
+    background: currentcolor;
+    position: relative;
+    animation: loader-15 1s ease-in-out infinite;
+    animation-delay: 0.4s;
+    width: 0.25em;
+    height: 0.5em;
+    margin: 0 0.5em;
+}
+
+.loader-15:after, .loader-15:before {
+    content: "";
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    background: inherit;
+    animation: inherit;
+}
+
+.loader-15:before {
+    right: 0.5em;
+    animation-delay: 0.2s;
+}
+
+.loader-15:after {
+    left: 0.5em;
+    animation-delay: 0.6s;
+}
+
+@keyframes loader-15 {
+    0%, 100% {
+        box-shadow: 0 0 0 currentcolor, 0 0 0 currentcolor;
+    }
+    50% {
+        box-shadow: 0 -0.25em 0 currentcolor, 0 0.25em 0 currentcolor;
+    }
+}
+
+.cp-admin-container {
+    background-color: whitesmoke;
+}
+
+.cp-admin-header {
+    background-color: #060930;
+    padding: 20px;
+    color: white;
+}
+
+.cp-admin-header ul {
+    display: flex;
+    flex-direction: row;
+}
+
+.cp-admin-header ul li {
+    margin-right: 10px;
+    list-style: none;
+}
+
+.cp-admin-exit {
+    color: red;
+}
+
+.cp-admin-content {
+    padding: 10px;
+    height: 100vh;
+    border-radius: 5px;
+}
+
+.cp-admin-menu {
+    width: 100%;
+    font-size: 20px;
+    padding: 10px;
+    background-color: #ffeeba;
+    text-align: center;
+    list-style: none;
+    cursor: pointer;
+}
+
+.cp-admin-menu-ul {
+    text-align: center;
+    list-style: none;
+}
+
+.cp-admin-menu-ul li {
+    margin: 5px;
+    border-bottom: 1px solid;
+    font-size: 16px;
+    padding: 10px;
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+.cp-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.cp-container-content {
+    background-color: #F5F5F5;
+}
+
+.cp-nav {
+    width: 100%;
+    background-color: #060930;
+}
+
+.cp-nav ul {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.cp-nav ul li {
+    list-style: none;
+    margin: 5px;
+}
+
+.cp-nav ul li a {
+    display: block;
+    padding: 15px;
+    color: #f1f6f9;
+}
+
+.cp-nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.cp-header {
+    /* this part written by legendary BIG M */
+}
+
+.cp-header .cp-header-slider {
+    height: 70vh;
+    background: url("../img/app_img/revslide5_bg.jpg") no-repeat center center fixed;
+}
+
+.cp-header .cp-dialog-header {
+    transform: translateY(-50px);
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background: #3797a4;
+    height: 150px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.cp-header .cp-dialog-header ::before {
+    content: "";
+    transform: skewY(2deg) translateY(-20px);
+    width: 100%;
+    height: 120px;
+    background-color: #3797a4;
+    position: absolute;
+    z-index: -1;
+    border-radius: 10px;
+    right: 0;
+    top: 0;
+}
+
+.cp-header .cp-dialog-header p:first-child {
+    font-size: 1.75vw;
+    margin: 10px;
+    color: white;
+}
+
+.cp-header .cp-dialog-header p {
+    font-size: 1.2vw;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.cp-header .cp-dialog-header .cp-btn-holder-header {
+    display: flex;
+    align-items: center;
+}
+
+.cp-d-flex {
+    display: flex;
+}
+
+.cp-section-index-page {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.cp-section-index-page .cp-article-terms {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cp-section-index-page .cp-article-terms section:first-child {
+    width: 400px;
+    height: 500px;
+    background: url("../img/app_img/car_img_2_mirror_left_section2.jpg") fixed;
+}
+
+.cp-section-index-page .cp-article-terms section:last-child {
+    width: 60%;
+    margin: 0 4%;
+}
+
+.cp-row {
+    width: 90%;
+    margin: auto;
+}
+
+.cp-row h1 {
+    text-align: center;
+    color: gray;
+    font-size: 2.75vw;
+    margin: 25px;
+}
+
+.cp-introduction {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.cp-introduction p {
+    font-size: 1.3vw;
+    margin: 10px;
+    color: black;
+}
+
+/* this part written by legendary BIG M */
+.cp-brand {
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+/* this part written by legendary BIG M */
+.cp-card {
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    padding: 8px;
+    margin: 15px 5px;
+    transition: 0.3s all ease-in;
+    color: black;
+}
+
+.cp-card img {
+    border-bottom: 1px solid #CCC;
+}
+
+.cp-card:hover {
+    border: 1px solid linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);
+    box-shadow: 0 0 20px #ccc;
+}
+
+.cp-card .cp-card-title {
+    font-size: 25px;
+    margin: 10px 15px 0px;
+}
+
+.cp-card .cp-card-description {
+    padding: 10px 20px;
+}
+
+.cp-footer {
+    color: white;
+    background-color: #060930;
+    text-align: center;
+    padding: 20px;
+    border-top: white 1px dashed;
+}
+
+.cp-register-login {
+    float: left;
+    position: absolute;
+    top: 5px;
+    left: 25px;
+}
+
+.cp-register-login .cp-btn-login {
+    padding: 5px 15px;
+    transition: all 0.2s ease-in;
+}
+
+.cp-register-login .cp-btn-login:hover {
+    padding: 6px 20px;
+    background-color: #595b83;
+    border: 0;
+}
+
+.cp-register-login .cp-btn-register {
+    padding: 5px 15px;
+    transition: all 0.2s ease-in;
+}
+
+.cp-register-login .cp-btn-register:hover {
+    padding: 6px 20px;
+    background-color: #595b83;
+    border: 0;
+}
+
+/*# sourceMappingURL=style.css.map */
