@@ -18,7 +18,7 @@ class SubCategory extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class,'subCategory_id');
     }
 
     public function photo()

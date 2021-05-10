@@ -44,7 +44,8 @@
 <div class="panel" style="margin-top: 50px">
 
     {{--    rich text editor--}}
-    <textarea id="editor">{{$review->review}}</textarea>
+    <!-- <textarea id="editor">{{$review->review}}</textarea> -->
+    <textarea style="width:100%;height: 1000px;" id="review_product">{{$review->review}}</textarea>
 </div>
 <script src="{{asset("js/jquery.js")}}"></script>
 <script src="{{asset("js/sweetalert.min.js")}}"></script>
@@ -61,11 +62,12 @@
         });
     let save_changes = document.querySelector("#save_changes")
     let text_editor = document.querySelector("#editor")
+    let review_product = document.querySelector("#review_product")
     save_changes.addEventListener("click", function () {
         $.ajax({
             type: 'POST',
             url: '<?php echo route("change.review.product") ?>',
-            data: {_token: '<?php echo csrf_token() ?>', id_product: <?php echo $productId ?>, text: ClassicEditor_data.getData()},
+            data: {_token: '<?php echo csrf_token() ?>', id_product: <?php echo $productId ?>, text: review_product.value},
             success: function (data) {
                 swal({
                     title: "نقد",

@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::get('home', function () {
     $home_api = [];
     $sliders = Slider::orderBy('id', 'desc')->get();
@@ -59,9 +58,66 @@ Route::get('home', function () {
     $home_api['new_products'] = $products;
     return $home_api;
 });
-Route::get('cat', function () {
-    return Category::all();
+
+Route::get('category', function () {
+    $categories = Category::orderBy('id', 'desc')->get();
+    foreach ($categories as $category) {
+        $category['category_photo'] = $category->photo->path;
+        foreach($category->subCategories as $sub_category){
+            $sub_category['sub_category_photo'] = $sub_category->photo->path;
+        }
+    }
+    return $categories;
 });
-Route::get('subcat/{cat_id}', function ($cat_id) {
-    return Category::find($cat_id)->subCategorys;
+
+Route::get('categoryproduct/{id}', function ($id) {
+    $category = SubCategory::find($id);
+    $show_category_api=[];
+    $show_category_api['category']=$category;
+
+    $products = $category->products;
+    foreach ($products as $product) {
+        foreach ($product->Productphotos as $productphoto) {
+            if ($productphoto->thumbnail == 1) {
+                $product['thumbnail'] = 'img/' . $productphoto->path;
+            }
+        }
+        $product['price'] = $product->stores[0]->price_sell;
+        $subCategory = SubCategory::find($product->subCategory_id);
+        $product['category'] = $subCategory->category->name;
+        $product['Subcategory'] = $subCategory->name;
+
+        $product['brand'] = Brand::find($product->brand_id);
+        $colors = [];
+        foreach (unserialize($product->colors) as $key => $value) {
+            $color_id = (int)$value;
+            $colors[] = Color::find($color_id);
+
+        }
+        $product['colors'] = $colors;
+    }
+    return $show_category_api;
+});
+
+// show product propertises
+Route::get('product/{id}/properties', function ($id) {
+    $prodouct = Product::find($id);
+    foreach($prodouct->properties_products as $properties){
+        $properties->sub_properties_product;
+    }
+    return $prodouct;
+});
+
+
+Route::get("product/{id}/review", function ($id) {
+    $productId = $id;
+    $review;
+    if(Product::find($id)->review){
+        $review = Product::find($id)->review;
+    }else{
+        $review = Product::find($id)->review()->create([
+            'review'=>''
+        ]);
+    }
+    return Product::find($id)->review;
 });

@@ -18,6 +18,6 @@ class PropertiesProduct extends Model
 
     public function sub_properties_product()
     {
-        return $this->hasMany(SubPropertiesProduct::class);
+        return $this->hasMany(SubPropertiesProduct::class,'properties_products_id');
     }
 }

@@ -1,13 +1,8 @@
 @extends("admin.admin")
 @section('title','زیر مشخصات')
-@section('title_content')
-    <i class="fa fa-pause fa-fw"></i>
-    زیر مشخصات
-@endsection
-@section("body_content")
-    {{--    @include('include.messageAlertSessions')--}}
-    <div class="table-responsive">
-        <div class="col-sm-3">
+@section("content")
+    <div class="row">
+        <div class="col-sm-2">
             <form action="{{route('sub.product.properties.store',$id_properties)}}" method="post">
                 {{--                @include("include.formErrors")--}}
                 @csrf

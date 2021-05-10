@@ -16,4 +16,5 @@ class SubPropertiesProduct extends Model
     {
         return $this->belongsTo(PropertiesProduct::class);
     }
+    
 }

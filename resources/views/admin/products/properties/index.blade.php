@@ -1,12 +1,9 @@
 @extends("admin.admin")
-@section('title','مشحصات')
-@section('title_content')
-    مشحصات
-@endsection
-@section("body_content")
+@section('title','مشخصات')
+@section("content")
     {{--    @include('include.messageAlertSessions')--}}
-    <div class="table-responsive">
-        <div class="col-sm-3">
+    <div class="row">
+        <div class="col-sm-2">
             <form action="{{route("product.properties.store",$id)}}" method="post">
                 {{--                @include("include.formErrors")--}}
                 @csrf
@@ -20,7 +17,7 @@
             </form>
         </div>
         <div class="col-sm-9">
-            @if(count($properties)>0)
+            @if(count($properties))
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
                     <tr>

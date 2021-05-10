@@ -144,7 +144,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminUser']], funct
     //review
     Route::get("product/{id}/review", function ($id) {
         $productId = $id;
-        $review = Product::find($id)->review;
+        $review;
+        if(Product::find($id)->review){
+            $review = Product::find($id)->review;
+        }else{
+            $review = Product::find($id)->review()->create([
+                'review'=>''
+            ]);
+        }
         return view("admin.products.product.review", compact("productId", "review"));
     })->name("product.review.edit");
 
