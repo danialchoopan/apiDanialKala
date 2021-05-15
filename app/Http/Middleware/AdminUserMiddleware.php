@@ -22,5 +22,7 @@ class AdminUserMiddleware
         }else{
             return redirect(route('home.admin'));
         }
+        
+        // return $next($request);
     }
 }

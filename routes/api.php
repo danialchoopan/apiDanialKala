@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\AuthController;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
@@ -121,3 +122,16 @@ Route::get("product/{id}/review", function ($id) {
     }
     return Product::find($id)->review;
 });
+
+
+//user auth api route
+Route::post('auth/user/register', [AuthController::class,'register']);
+Route::post('auth/user/login', [AuthController::class,'login']);
+Route::post('auth/user/checkToken', [AuthController::class,'checkToken']);
+Route::post('auth/user/getUserInfo', [AuthController::class,'getUserInfo']);
+//verify phone number
+Route::post('auth/user/checkIfPhoneVerified', [AuthController::class,'checkIfPhoneVerified']);
+Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class,'sendVerifyPhoneSms']);
+Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVerifyPhoneSms']);
+//end user auth api route
+
