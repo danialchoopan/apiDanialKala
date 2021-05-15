@@ -16,7 +16,7 @@ class CreateBrandsTable extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('photo_id');
+            $table->unsignedBigInteger('photo_id');
             $table->timestamps();
 
             $table->foreign('photo_id')
