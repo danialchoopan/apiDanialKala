@@ -15,13 +15,13 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt_token', ['except' => ['login', 'register','checkToken']]);
+        $this->middleware('jwt_token', ['except' => ['login', 'register', 'checkToken']]);
     }
 
 
     public function register(Request $request)
     {
-        $credentials = $request->only('name', 'email','phone', 'password');
+        $credentials = $request->only('name', 'email', 'phone', 'password');
         User::create(array_merge($credentials, ['password' => Hash::make($request->password)]));
         return $this->login($request);
     }
@@ -29,7 +29,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return response([
                 'success' => false,
                 'message' => 'Unauthorized'
@@ -38,7 +38,7 @@ class AuthController extends Controller
         return response([
             'success' => true,
             'token' => $token,
-            'user' => Auth::user(),
+            'user' => auth('api')->user(),
             'message' => 'user successfully login in'
         ]);
     }
@@ -46,7 +46,7 @@ class AuthController extends Controller
     public function refresh(Request $request)
     {
         return response([
-            'token' => auth()->refresh(),
+            'token' => auth('api')->refresh(),
             'user' => Auth::user(),
             'message' => 'user successfully login in'
         ]);
@@ -58,7 +58,7 @@ class AuthController extends Controller
         try {
             if (Hash::check($request->oldPassword, Auth::user()->getAuthPassword())) {
                 $newPassword = Hash::make($request->newPassword);
-                $user = Auth::user();
+                $user = auth('api')->user();
                 $user->password = $newPassword;
                 $user->save();
                 return response([
@@ -85,22 +85,22 @@ class AuthController extends Controller
             'success' => true
         ]);
     }
-    
+
     public function getUserInfo()
     {
-        $userModel=Auth::user();
-        if($userModel->userInfo()){
+        $userModel = auth('api')->user();
+        if ($userModel->userInfo()) {
             $userModel->userInfo()->create([
-                'national_code'=>'',
-                'state_name'=>'',
-                'city_name'=>'',
-                'city_code'=>'',
+                'national_code' => '',
+                'state_name' => '',
+                'city_name' => '',
+                'city_code' => '',
             ]);
         }
         $userModel->userInfo;
         return response([
             'success' => true,
-            'user'=>$userModel
+            'user' => $userModel
         ]);
     }
 
@@ -113,27 +113,27 @@ class AuthController extends Controller
     }
 
 
-    
     public function checkIfPhoneVerified()
     {
-        $user=Auth::user();
-        if($user->phone_verified){
+        $user = User::find(auth('api')->id());
+        if ($user->phone_verified) {
             return response(
                 [
-                     'verified'=>true
+                    'verified' => true
                 ]
             );
-        }else{
-            
-        return response(
+        } else {
+
+            return response(
                 [
-                    'verified'=>false
+                    'verified' => false
                 ]
             );
         }
     }
 
-    public function sendVerifyPhoneSms(){
+    public function sendVerifyPhoneSms()
+    {
         $code_sms = $this->sms_code_validation_generator(5);
         $sender = "1000596446";
         $receptor = "09216059177";
@@ -142,54 +142,57 @@ class AuthController extends Controller
         // $api->Send($sender, $receptor, $message);
         //expire_time 5m
         $expire_time = time() + 500;
-        Auth::user()->verifyPhone()->create([
-            'code'=>$code_sms,
-            'expire_time'=>$expire_time
+        $user = User::find(auth('api')->id());
+        $user->verifyPhone()->create([
+            'code' => $code_sms,
+            'expire_time' => $expire_time
         ]);
         return response(
             [
-                'success'=>true,
-                 'message'=>'sms sended'
+                'success' => true,
+                'message' => 'sms sended'
             ]
         );
     }
 
 
-    public function confirmVerifyPhoneSms(Request $request){
-        $user_code=$request->user_code;
-        $user=Auth::user();
-        $verify_phone_user_model=$user->verifyPhone()->orderBy('id', 'desc')
-        ->first();
-        if($verify_phone_user_model->expire_time > time()){
-            if($verify_phone_user_model->code == $user_code){
-                $user->phone_verified=1;
+    public function confirmVerifyPhoneSms(Request $request)
+    {
+        $user_code = $request->user_code;
+        $user = User::find(auth('api')->id());
+        $verify_phone_user_model = $user->verifyPhone()->orderBy('id', 'desc')
+            ->first();
+        if ($verify_phone_user_model->expire_time > time()) {
+            if ($verify_phone_user_model->code == $user_code) {
+                $user->phone_verified = 1;
                 $user->save();
                 return response(
                     [
-                        'success'=>true,
-                        'message'=>'your phone number verified',
-                        'response_code'=>201
+                        'success' => true,
+                        'message' => 'your phone number verified',
+                        'response_code' => 201
                     ]
                 );
-            }else{
+            } else {
                 return response(
                     [
-                        'success'=>true,
-                        'message'=>'your code is invalid',
-                        'response_code'=>202
+                        'success' => true,
+                        'message' => 'your code is invalid',
+                        'response_code' => 202
                     ]
                 );
             }
-        }else{
+        } else {
             return response(
-                    [
-                        'success'=>true,
-                        'message'=>'your code is expried',
-                        'response_code'=>203
-                    ]
-                );
+                [
+                    'success' => true,
+                    'message' => 'your code is expried',
+                    'response_code' => 203
+                ]
+            );
         }
     }
+
     public function sms_code_validation_generator($length = 6)
     {
         $code = '';
@@ -200,7 +203,7 @@ class AuthController extends Controller
             $code .= $ar_numbers[$i];
         }
         return $code;
-    
+
     }
 
 }

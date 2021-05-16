@@ -40,17 +40,18 @@ class User extends Authenticatable  implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-
-
     public function verifyPhone(){
         return $this->hasMany(VerifyPhoneNumber::class);
 
     }
 
+    public function userAddess(){
+        return $this->hasMany(UserAddess::class);
+    }
+
     public function userInfo(){
         return $this->hasOne(UserInfo::class);
     }
-
 
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\ApiAddessController;
 use App\Http\Controllers\api\AuthController;
 use App\Models\Brand;
 use App\Models\Category;
@@ -9,6 +10,7 @@ use App\Models\Slider;
 use App\Models\SubCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
@@ -135,3 +137,15 @@ Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class,'sendVerifyPh
 Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVerifyPhoneSms']);
 //end user auth api route
 
+//addess
+Route::apiResource('user/addess',ApiAddessController::class);
+//end addesss
+Route::get('states/', function () {
+    $states=DB::select('select * from `locate` where `subid` = ?', [1]);
+    return response($states);
+});
+Route::get('states/{id}', function ($id) {
+    $cities=DB::select('select * from `locate` where `subid` = ?', [$id]);
+    return response($cities);
+});
+//get 
