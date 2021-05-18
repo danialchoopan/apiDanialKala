@@ -104,6 +104,27 @@ class AuthController extends Controller
         ]);
     }
 
+    public function updateUserInfo(Request $request)
+    {
+        $userModel = auth('api')->user();
+        if ($userModel->userInfo()) {
+            $user=auth('api')->user();
+            $user->name=$request->user_name;
+            $user->phone=$request->phone;
+            $user->save();  
+            $userModel->userInfo()->update([
+                'national_code' => $request->national_code,
+                'state_name' => $request->state_name,
+                'city_name' => $request->city_name,
+                'city_code' => $request->city_code,
+            ]);
+        }
+        $userModel->userInfo;
+        return response([
+            'success' => true,
+            'user' => $userModel
+        ]);
+    }
     public function logout()
     {
         auth()->logout();

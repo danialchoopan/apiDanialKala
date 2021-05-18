@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\api\ApiAddessController;
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\FavoriteProductUserController;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\FavoriteProduct;
 use App\Models\Product;
 use App\Models\Slider;
 use App\Models\SubCategory;
@@ -131,6 +133,7 @@ Route::post('auth/user/register', [AuthController::class,'register']);
 Route::post('auth/user/login', [AuthController::class,'login']);
 Route::post('auth/user/checkToken', [AuthController::class,'checkToken']);
 Route::post('auth/user/getUserInfo', [AuthController::class,'getUserInfo']);
+Route::patch('auth/user/updateUserInfo', [AuthController::class,'updateUserInfo']);
 //verify phone number
 Route::post('auth/user/checkIfPhoneVerified', [AuthController::class,'checkIfPhoneVerified']);
 Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class,'sendVerifyPhoneSms']);
@@ -148,4 +151,7 @@ Route::get('states/{id}', function ($id) {
     $cities=DB::select('select * from `locate` where `subid` = ?', [$id]);
     return response($cities);
 });
-//get 
+//favorite product
+Route::post('favorite/product/all',[FavoriteProductUserController::class,'index']);
+Route::post('favorite/product',[FavoriteProductUserController::class,'store']);
+Route::post('favorite/product/check',[FavoriteProductUserController::class,'checkFavorite']);

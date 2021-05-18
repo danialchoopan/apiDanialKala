@@ -53,6 +53,10 @@ class User extends Authenticatable  implements JWTSubject
         return $this->hasOne(UserInfo::class);
     }
 
+    public function favoriteProduct(){
+        return $this->hasMany(FavoriteProduct::class);
+    }
+
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
