@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\ApiAddessController;
+use App\Http\Controllers\api\ApiUserCartController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\FavoriteProductUserController;
 use App\Models\Brand;
@@ -63,7 +64,21 @@ Route::get('home', function () {
     $home_api['new_products'] = $products;
     return $home_api;
 });
-
+//show single product
+Route::get('product/{id}', function ($id) {
+    $product = Product::find($id);
+    foreach ($product->Productphotos as $productphoto) {
+        if ($productphoto->thumbnail == 1) {
+            $product['thumbnail'] = 'img/' . $productphoto->path;
+        }
+    }
+    $product['price'] = $product->stores[0]->price_sell;
+    $subCategory = SubCategory::find($product->subCategory_id);
+    $product['category'] = $subCategory->category->name;
+    $product['Subcategory'] = $subCategory->name;
+    return $product;
+    
+});
 Route::get('category', function () {
     $categories = Category::orderBy('id', 'desc')->get();
     foreach ($categories as $category) {
@@ -142,6 +157,7 @@ Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVe
 
 //addess
 Route::apiResource('user/addess',ApiAddessController::class);
+Route::apiResource('user/cart',ApiUserCartController::class);
 //end addesss
 Route::get('states/', function () {
     $states=DB::select('select * from `locate` where `subid` = ?', [1]);
