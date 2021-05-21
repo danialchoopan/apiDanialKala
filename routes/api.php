@@ -90,6 +90,14 @@ Route::get('category', function () {
     return $categories;
 });
 
+Route::get('subCategory/{id}', function ($id) {
+    $subCategories=Category::find($id)->subCategories;
+    foreach($subCategories as $subCategory){
+        $subCategory->photo->path;
+    }
+    return $subCategories;
+});
+
 Route::get('categoryproduct/{id}', function ($id) {
     $category = SubCategory::find($id);
     $show_category_api=[];
