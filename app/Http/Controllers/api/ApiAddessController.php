@@ -12,10 +12,6 @@ use Illuminate\Http\Request;
 class ApiAddessController extends Controller
 {
     
-    public function __construct()
-    {
-        $this->middleware('jwt_token');
-    }
     /**
      * Display a listing of the resource.
      *

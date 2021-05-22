@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Verta;
 
 class Product extends Model
 {
@@ -58,6 +60,10 @@ class Product extends Model
     public function comment()
     {
         return $this->hasMany(ProductComment::class);
+    }
+    
+    public function getCreatedAtAttribute($value){
+        return new Verta($value)."";
     }
 
 }

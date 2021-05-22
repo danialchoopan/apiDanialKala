@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\api\ApiAddessController;
 use App\Http\Controllers\api\ApiProductCommentController;
+use App\Http\Controllers\api\ApiProductController;
 use App\Http\Controllers\api\ApiUserCartController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\FavoriteProductUserController;
@@ -164,11 +165,21 @@ Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class,'sendVerifyPh
 Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVerifyPhoneSms']);
 //end user auth api route
 
-//addess
-Route::apiResource('user/addess',ApiAddessController::class);
-Route::apiResource('user/cart',ApiUserCartController::class);
+Route::group(['middleware' => ['jwt_token']],function () {
+    //addess
+    Route::apiResource('user/addess',ApiAddessController::class);
+    Route::apiResource('user/cart',ApiUserCartController::class);
+    //favorite product
+    Route::post('favorite/product/all',[FavoriteProductUserController::class,'index']);
+    Route::post('favorite/product',[FavoriteProductUserController::class,'store']);
+    Route::post('favorite/product/check',[FavoriteProductUserController::class,'checkFavorite']);
+
+
+});
 Route::apiResource('product/comment',ApiProductCommentController::class);
-//end addesss
+
+Route::post('product/search', [ApiProductController::class,'search']);
+
 Route::get('states/', function () {
     $states=DB::select('select * from `locate` where `subid` = ?', [1]);
     return response($states);
@@ -177,7 +188,3 @@ Route::get('states/{id}', function ($id) {
     $cities=DB::select('select * from `locate` where `subid` = ?', [$id]);
     return response($cities);
 });
-//favorite product
-Route::post('favorite/product/all',[FavoriteProductUserController::class,'index']);
-Route::post('favorite/product',[FavoriteProductUserController::class,'store']);
-Route::post('favorite/product/check',[FavoriteProductUserController::class,'checkFavorite']);

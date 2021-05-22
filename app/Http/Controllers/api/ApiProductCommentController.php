@@ -13,7 +13,7 @@ class ApiProductCommentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt_token');   
+        $this->middleware('jwt_token',['except' => ['show']]);   
     }
 
     /**
@@ -59,7 +59,7 @@ class ApiProductCommentController extends Controller
      */
     public function show($id)
     {
-        $product=Product::find($id);
+        $product=Product::findOrFail($id);
         $comments=[];
         foreach($product->comment as $productComment){
             $comment_item['productComment']=$productComment;
