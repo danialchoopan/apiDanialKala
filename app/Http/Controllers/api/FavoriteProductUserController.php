@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class FavoriteProductUserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('jwt_token');
+    }
     /**
      * Display a listing of the resource.
      *

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\ApiAddessController;
+use App\Http\Controllers\api\ApiProductCommentController;
 use App\Http\Controllers\api\ApiUserCartController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\FavoriteProductUserController;
@@ -166,6 +167,7 @@ Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVe
 //addess
 Route::apiResource('user/addess',ApiAddessController::class);
 Route::apiResource('user/cart',ApiUserCartController::class);
+Route::apiResource('product/comment',ApiProductCommentController::class);
 //end addesss
 Route::get('states/', function () {
     $states=DB::select('select * from `locate` where `subid` = ?', [1]);
