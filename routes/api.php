@@ -4,6 +4,7 @@ use App\Http\Controllers\api\ApiAddessController;
 use App\Http\Controllers\api\ApiProductCommentController;
 use App\Http\Controllers\api\ApiProductController;
 use App\Http\Controllers\api\ApiUserCartController;
+use App\Http\Controllers\api\ApiUserOrderProductController;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\FavoriteProductUserController;
 use App\Models\Brand;
@@ -40,12 +41,16 @@ Route::get('home', function () {
     foreach ($categories as $category) {
         $category['category_photo'] = $category->photo->path;
     }
-    $products = Product::orderBy('id', 'desc')->get();
+    $products = Product::orderBy('id', 'desc')->take(7)->get();
     foreach ($products as $product) {
-        foreach ($product->Productphotos as $productphoto) {
-            if ($productphoto->thumbnail == 1) {
-                $product['thumbnail'] = 'img/' . $productphoto->path;
+        if($product->Productphotos){
+            foreach ($product->Productphotos as $productphoto) {
+                if ($productphoto->thumbnail == 1) {
+                    $product['thumbnail'] = 'img/' . $productphoto->path;
+                }
             }
+        }else{
+            $product['thumbnail']="";
         }
         $product['price'] = $product->stores[0]->price_sell;
         $subCategory = SubCategory::find($product->subCategory_id);
@@ -69,10 +74,14 @@ Route::get('home', function () {
 //show single product
 Route::get('product/{id}', function ($id) {
     $product = Product::find($id);
-    foreach ($product->Productphotos as $productphoto) {
-        if ($productphoto->thumbnail == 1) {
-            $product['thumbnail'] = 'img/' . $productphoto->path;
+    if(isset($product->Productphotos)){
+        foreach ($product->Productphotos as $productphoto) {
+            if ($productphoto->thumbnail == 1) {
+                $product['thumbnail'] = 'img/' . $productphoto->path;
+            }
         }
+    }else{
+        $product['thumbnail']="";
     }
     $product['price'] = $product->stores[0]->price_sell;
     $subCategory = SubCategory::find($product->subCategory_id);
@@ -107,10 +116,14 @@ Route::get('categoryproduct/{id}', function ($id) {
 
     $products = $category->products;
     foreach ($products as $product) {
-        foreach ($product->Productphotos as $productphoto) {
-            if ($productphoto->thumbnail == 1) {
-                $product['thumbnail'] = 'img/' . $productphoto->path;
-            }
+        if($product->Productphotos){
+            foreach ($product->Productphotos as $productphoto) {
+                if ($productphoto->thumbnail == 1) {
+                    $product['thumbnail'] = 'img/' . $productphoto->path;
+                }
+           }
+        }else{
+            $product['thumbnail']="";
         }
         $product['price'] = $product->stores[0]->price_sell;
         $subCategory = SubCategory::find($product->subCategory_id);
@@ -159,10 +172,18 @@ Route::post('auth/user/login', [AuthController::class,'login']);
 Route::post('auth/user/checkToken', [AuthController::class,'checkToken']);
 Route::post('auth/user/getUserInfo', [AuthController::class,'getUserInfo']);
 Route::patch('auth/user/updateUserInfo', [AuthController::class,'updateUserInfo']);
+//change password
+Route::post('auth/user/changePassword', [AuthController::class,'changePassword']);
+
 //verify phone number
 Route::post('auth/user/checkIfPhoneVerified', [AuthController::class,'checkIfPhoneVerified']);
 Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class,'sendVerifyPhoneSms']);
 Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVerifyPhoneSms']);
+//verfiy email
+Route::post('auth/user/sendVerifyEmail', [AuthController::class,'sendVerifyEmail']);
+Route::get('auth/user/confirmVerifyEmail/{userCode}', [AuthController::class,'confirmVerifyEmail']);
+
+
 //end user auth api route
 
 Route::group(['middleware' => ['jwt_token']],function () {
@@ -173,12 +194,13 @@ Route::group(['middleware' => ['jwt_token']],function () {
     Route::post('favorite/product/all',[FavoriteProductUserController::class,'index']);
     Route::post('favorite/product',[FavoriteProductUserController::class,'store']);
     Route::post('favorite/product/check',[FavoriteProductUserController::class,'checkFavorite']);
-
-
+    //user order
+    Route::apiResource('user/order',ApiUserOrderProductController::class);
 });
 Route::apiResource('product/comment',ApiProductCommentController::class);
 
 Route::post('product/search', [ApiProductController::class,'search']);
+Route::get('show/all/product', [ApiProductController::class,'index']);
 
 Route::get('states/', function () {
     $states=DB::select('select * from `locate` where `subid` = ?', [1]);

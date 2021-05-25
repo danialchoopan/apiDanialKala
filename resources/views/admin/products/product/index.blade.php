@@ -33,7 +33,7 @@
                         <td>{{$product->subcategory->name}}</td>
                         <td>{{$product->brand->name}}</td>
                         <td>{{substr($product->description,0,10)}} ...</td>
-                        <td>{{$product->created_at->diffForHumans()}}</td>
+                        <td>{{$product->created_at}}</td>
                         <td>
                             <a class="btn btn-success m-1" href="{{route('upload.img.product',$product->id)}}">افزودن عکس</a>
                             <a class="btn btn-success m-1" href="{{route('product.review.edit',$product->id)}}">افزودن

@@ -45,6 +45,12 @@ class User extends Authenticatable  implements JWTSubject
 
     }
 
+    
+    public function verifyEmail(){
+        return $this->hasMany(verifyEmail::class);
+
+    }
+
     public function userAddess(){
         return $this->hasMany(UserAddess::class);
     }

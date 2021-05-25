@@ -40,7 +40,7 @@
                                     src="{{env('DEFAULT_URL','')}}storage/{{$category->photo->path }}"
                                     alt="">
                             </td>
-                            <td>{{$category->created_at->diffForHumans()}}</td>
+                            <td>{{$category->created_at}}</td>
                             <td>
                                 <form action="{{route('category.destroy',$category->id)}}" method="post">
                                     @csrf

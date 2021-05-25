@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\VerifyPhoneNumber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Kavenegar\KavenegarApi;
 
@@ -56,19 +57,19 @@ class AuthController extends Controller
     public function changePassword(Request $request)
     {
         try {
-            if (Hash::check($request->oldPassword, Auth::user()->getAuthPassword())) {
+            if (Hash::check($request->oldPassword, auth('api')->user()->getAuthPassword())) {
                 $newPassword = Hash::make($request->newPassword);
                 $user = auth('api')->user();
                 $user->password = $newPassword;
                 $user->save();
                 return response([
                     'success' => true,
-                    'message' => 'change password successfully'
+                    'message' => 'رمز عبور شما با موفقیت تغییر کرد'
                 ]);
             } else {
                 return response([
                     'success' => false,
-                    'message' => 'old password not match'
+                    'message' => 'رمزعبور فعلی شما اشتباه است'
                 ]);
             }
         } catch (\Exception $exception) {
@@ -156,14 +157,30 @@ class AuthController extends Controller
     public function sendVerifyPhoneSms()
     {
         $code_sms = $this->sms_code_validation_generator(5);
-        $sender = "1000596446";
-        $receptor = "09216059177";
         $message = "code:$code_sms" . "\n" . "کد تایید ارسال شده شما تا 5 دقیقه معتبر است \n دانیال کالا";
-        $api = new KavenegarApi(env('KAVENEGAR_API_KEY'));
-        // $api->Send($sender, $receptor, $message);
+        $user = User::find(auth('api')->id());
+        //using sms.ir as sms api
+        // $responseApiToken=Http::asForm()->withHeaders([
+        //     'Content-Type'=>'application/x-www-form-urlencoded'
+        //     ])->post("https://RestfulSms.com/api/Token",[
+        //     'UserApiKey'=>env('UserApiKey'),
+        //     'SecretKey'=>env('SecretKey'),
+        // ]);
+        // if($responseApiToken->successful()){
+            // $response=Http::asForm()->withHeaders([
+            //     'Content-Type'=>'application/x-www-form-urlencoded',
+            //     'x-sms-ir-secure-token'=>'',
+
+            //     ])->post("http://RestfulSms.com/api/MessageSend",[
+            //     'Messages'=>$message,
+            //     'MobileNumbers'=>$user->phone,
+            //     'LineNumber'=>'30006822885772',
+            //     'SendDateTime'=>'',
+            // ]);
+            // return $response;
+        // }
         //expire_time 5m
         $expire_time = time() + 500;
-        $user = User::find(auth('api')->id());
         $user->verifyPhone()->create([
             'code' => $code_sms,
             'expire_time' => $expire_time
@@ -176,6 +193,60 @@ class AuthController extends Controller
         );
     }
 
+    public function sendVerifyEmail()
+    {
+        $code_emial = $this->sms_code_validation_generator(20);
+        $message = " ";
+        $user = User::find(auth('api')->id());
+        //expire_time 1day
+        $expire_time = time() + 86400;
+        $user->verifyEmail()->create([
+            'code' => $code_emial,
+            'expire_time' => $expire_time
+        ]);
+        return response(
+            [
+                'success' => true,
+                'message' => 'email sended'
+            ]
+        );
+    }
+
+    public function confirmVerifyEmail($userCode)
+    {
+        $user = User::find(auth('api')->id());
+        $verify_email_user_model = $user->verifyEmail()->orderBy('id', 'desc')
+            ->first();
+        if ($verify_email_user_model->expire_time > time()) {
+            if ($verify_email_user_model->code == $userCode) {
+                $user->email_verified_at = time();
+                $user->save();
+                return response(
+                    [
+                        'success' => true,
+                        'message' => 'your email number verified',
+                        'response_code' => 201
+                    ]
+                );
+            } else {
+                return response(
+                    [
+                        'success' => true,
+                        'message' => 'your code is invalid',
+                        'response_code' => 202
+                    ]
+                );
+            }
+        } else {
+            return response(
+                [
+                    'success' => true,
+                    'message' => 'your code is expried',
+                    'response_code' => 203
+                ]
+            );
+        }
+    }
 
     public function confirmVerifyPhoneSms(Request $request)
     {

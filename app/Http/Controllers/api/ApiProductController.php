@@ -19,7 +19,32 @@ class ApiProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::orderBy('id', 'desc')->get();
+        foreach ($products as $product) {
+            if($product->Productphotos){
+                foreach ($product->Productphotos as $productphoto) {
+                    if ($productphoto->thumbnail == 1) {
+                        $product['thumbnail'] = 'img/' . $productphoto->path;
+                    }
+                }
+            }else{
+                $product['thumbnail']="";
+            }
+            $product['price'] = $product->stores[0]->price_sell;
+            $subCategory = SubCategory::find($product->subCategory_id);
+            $product['category'] = $subCategory->category->name;
+            $product['Subcategory'] = $subCategory->name;
+    
+            $product['brand'] = Brand::find($product->brand_id);
+            $colors = [];
+            foreach (unserialize($product->colors) as $key => $value) {
+                $color_id = (int)$value;
+                $colors[] = Color::find($color_id);
+    
+            }
+            $product['colors'] = $colors;
+        }
+        return response($products);
     }
 
     /**
