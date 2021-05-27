@@ -6,22 +6,26 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\VerifyPhoneNumber;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\Fluent\Concerns\Has;
-use Kavenegar\KavenegarApi;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt_token', ['except' => ['login', 'register', 'checkToken']]);
+        $this->middleware('jwt_token', ['except' => ['login', 'register', 'checkToken','changePasswordForgot','checkUserPhoneForForgotPassword','sendVerifyPhoneSmsForgotPassword','confirmVerifyPhoneSmsForgotPassword']]);
     }
 
 
     public function register(Request $request)
     {
+        $request->validate([
+            'phone'=>'unique:users',
+            'email'=>'unique:users'
+        ]);
         $credentials = $request->only('name', 'email', 'phone', 'password');
         User::create(array_merge($credentials, ['password' => Hash::make($request->password)]));
         return $this->login($request);
@@ -52,7 +56,7 @@ class AuthController extends Controller
             'message' => 'user successfully login in'
         ]);
     }
-
+    
 
     public function changePassword(Request $request)
     {
@@ -79,6 +83,7 @@ class AuthController extends Controller
             ]);
         }
     }
+
 
     public function checkToken()
     {
@@ -135,6 +140,113 @@ class AuthController extends Controller
     }
 
 
+    public function checkUserPhoneForForgotPassword(Request $request)
+    {
+        try{
+            $user=User::where('phone',$request->phone)->get()->first();
+            if($user){
+                return response(
+                    ['success'=>true]
+                );
+            }else{
+                return response(['success'=>false]);
+            }
+        }catch(Exception $e){
+            return response(['success'=>false]);
+        }
+    }
+
+    public function changePasswordForgot(Request $request)
+    {
+        try {
+            $newPassword = Hash::make($request->password);
+            $user = User::where('phone',$request->phone)->get()->first();
+            $user->password = $newPassword;
+            $user->save();
+            return response([
+                'success' => true,
+                'message' => 'رمز عبور شما با موفقیت تغییر کرد'
+            ]);
+        } catch (\Exception $exception) {
+            return response([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    public function sendVerifyPhoneSmsForgotPassword(Request $request)
+    {
+        $code_sms = $this->sms_code_validation_generator(5);
+        $message = "code:$code_sms" . "\n" . "کد تایید ارسال شده شما تا 5 دقیقه معتبر است \n دانیال کالا";
+        $user = User::where('phone',$request->phone)->get()->first();
+        //using sms.ir as sms api
+        $responseApiToken=Http::asForm()->withHeaders([
+            'Content-Type'=>'application/x-www-form-urlencoded'
+            ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
+            'UserApiKey'=>env('UserApiKey'),
+            'SecretKey'=>env('SecretKey'),
+        ]);
+        if($responseApiToken->successful()){
+            $response=Http::asForm()->withHeaders([
+                'Content-Type'=>'application/x-www-form-urlencoded',
+                'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
+                ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
+                'Messages'=>$message,
+                'MobileNumbers'=>$user->phone,
+                'LineNumber'=>'30006822885772',
+                'SendDateTime'=>'',
+            ]);
+        }
+        //expire_time 5m
+        $expire_time = time() + 500;
+        $user->verifyPhone()->create([
+            'code' => $code_sms,
+            'expire_time' => $expire_time
+        ]);
+        return response(
+            [
+                'success' => true,
+                'message' => 'sms sended'
+            ]
+        );
+    }
+
+    public function confirmVerifyPhoneSmsForgotPassword(Request $request)
+    {
+        $user_code = $request->code;
+        $user = User::where('phone',$request->phone)->get()->first();
+        $verify_phone_user_model = $user->verifyPhone()->orderBy('id', 'desc')
+            ->first();
+        if ($verify_phone_user_model->expire_time > time()) {
+            if ($verify_phone_user_model->code == $user_code) {
+                return response(
+                    [
+                        'success' => true,
+                        'message' => 'your phone number verified',
+                        'response_code' => 201
+                    ]
+                );
+            } else {
+                return response(
+                    [
+                        'success' => true,
+                        'message' => 'your code is invalid',
+                        'response_code' => 202
+                    ]
+                );
+            }
+        } else {
+            return response(
+                [
+                    'success' => true,
+                    'message' => 'your code is expried',
+                    'response_code' => 203
+                ]
+            );
+        }
+    }
+
     public function checkIfPhoneVerified()
     {
         $user = User::find(auth('api')->id());
@@ -160,25 +272,23 @@ class AuthController extends Controller
         $message = "code:$code_sms" . "\n" . "کد تایید ارسال شده شما تا 5 دقیقه معتبر است \n دانیال کالا";
         $user = User::find(auth('api')->id());
         //using sms.ir as sms api
-        // $responseApiToken=Http::asForm()->withHeaders([
-        //     'Content-Type'=>'application/x-www-form-urlencoded'
-        //     ])->post("https://RestfulSms.com/api/Token",[
-        //     'UserApiKey'=>env('UserApiKey'),
-        //     'SecretKey'=>env('SecretKey'),
-        // ]);
-        // if($responseApiToken->successful()){
-            // $response=Http::asForm()->withHeaders([
-            //     'Content-Type'=>'application/x-www-form-urlencoded',
-            //     'x-sms-ir-secure-token'=>'',
-
-            //     ])->post("http://RestfulSms.com/api/MessageSend",[
-            //     'Messages'=>$message,
-            //     'MobileNumbers'=>$user->phone,
-            //     'LineNumber'=>'30006822885772',
-            //     'SendDateTime'=>'',
-            // ]);
-            // return $response;
-        // }
+        $responseApiToken=Http::asForm()->withHeaders([
+            'Content-Type'=>'application/x-www-form-urlencoded'
+            ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
+            'UserApiKey'=>env('UserApiKey'),
+            'SecretKey'=>env('SecretKey'),
+        ]);
+        if($responseApiToken->successful()){
+            $response=Http::asForm()->withHeaders([
+                'Content-Type'=>'application/x-www-form-urlencoded',
+                'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
+                ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
+                'Messages'=>$message,
+                'MobileNumbers'=>$user->phone,
+                'LineNumber'=>'30006822885772',
+                'SendDateTime'=>'',
+            ]);
+        }
         //expire_time 5m
         $expire_time = time() + 500;
         $user->verifyPhone()->create([

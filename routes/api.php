@@ -179,9 +179,15 @@ Route::post('auth/user/changePassword', [AuthController::class,'changePassword']
 Route::post('auth/user/checkIfPhoneVerified', [AuthController::class,'checkIfPhoneVerified']);
 Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class,'sendVerifyPhoneSms']);
 Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVerifyPhoneSms']);
-//verfiy email
+//verify email
 Route::post('auth/user/sendVerifyEmail', [AuthController::class,'sendVerifyEmail']);
 Route::get('auth/user/confirmVerifyEmail/{userCode}', [AuthController::class,'confirmVerifyEmail']);
+
+//forgot password
+Route::post('auth/user/checkUserPhoneForForgotPassword',[AuthController::class,'checkUserPhoneForForgotPassword']);
+Route::post('auth/user/sendVerifyPhoneSmsForgotPassword',[AuthController::class,'sendVerifyPhoneSmsForgotPassword']);
+Route::post('auth/user/confirmVerifyPhoneSmsForgotPassword',[AuthController::class,'confirmVerifyPhoneSmsForgotPassword']);
+Route::post('auth/user/changePasswordForgot',[AuthController::class,'changePasswordForgot']);
 
 
 //end user auth api route
