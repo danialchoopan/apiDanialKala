@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\VerifyEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\VerifyPhoneNumber;
@@ -16,15 +17,15 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt_token', ['except' => ['login', 'register', 'checkToken','changePasswordForgot','checkUserPhoneForForgotPassword','sendVerifyPhoneSmsForgotPassword','confirmVerifyPhoneSmsForgotPassword']]);
+        $this->middleware('jwt_token', ['except' => ['login', 'register', 'checkToken', 'changePasswordForgot', 'checkUserPhoneForForgotPassword', 'sendVerifyPhoneSmsForgotPassword', 'confirmVerifyPhoneSmsForgotPassword','confirmVerifyEmail']]);
     }
 
 
     public function register(Request $request)
     {
         $request->validate([
-            'phone'=>'unique:users',
-            'email'=>'unique:users'
+            'phone' => 'unique:users',
+            'email' => 'unique:users'
         ]);
         $credentials = $request->only('name', 'email', 'phone', 'password');
         User::create(array_merge($credentials, ['password' => Hash::make($request->password)]));
@@ -56,7 +57,7 @@ class AuthController extends Controller
             'message' => 'user successfully login in'
         ]);
     }
-    
+
 
     public function changePassword(Request $request)
     {
@@ -114,10 +115,10 @@ class AuthController extends Controller
     {
         $userModel = auth('api')->user();
         if ($userModel->userInfo()) {
-            $user=auth('api')->user();
-            $user->name=$request->user_name;
-            $user->phone=$request->phone;
-            $user->save();  
+            $user = auth('api')->user();
+            $user->name = $request->user_name;
+            $user->phone = $request->phone;
+            $user->save();
             $userModel->userInfo()->update([
                 'national_code' => $request->national_code,
                 'state_name' => $request->state_name,
@@ -131,6 +132,7 @@ class AuthController extends Controller
             'user' => $userModel
         ]);
     }
+
     public function logout()
     {
         auth()->logout();
@@ -142,17 +144,17 @@ class AuthController extends Controller
 
     public function checkUserPhoneForForgotPassword(Request $request)
     {
-        try{
-            $user=User::where('phone',$request->phone)->get()->first();
-            if($user){
+        try {
+            $user = User::where('phone', $request->phone)->get()->first();
+            if ($user) {
                 return response(
-                    ['success'=>true]
+                    ['success' => true]
                 );
-            }else{
-                return response(['success'=>false]);
+            } else {
+                return response(['success' => false]);
             }
-        }catch(Exception $e){
-            return response(['success'=>false]);
+        } catch (Exception $e) {
+            return response(['success' => false]);
         }
     }
 
@@ -160,7 +162,7 @@ class AuthController extends Controller
     {
         try {
             $newPassword = Hash::make($request->password);
-            $user = User::where('phone',$request->phone)->get()->first();
+            $user = User::where('phone', $request->phone)->get()->first();
             $user->password = $newPassword;
             $user->save();
             return response([
@@ -179,25 +181,25 @@ class AuthController extends Controller
     {
         $code_sms = $this->sms_code_validation_generator(5);
         $message = "code:$code_sms" . "\n" . "کد تایید ارسال شده شما تا 5 دقیقه معتبر است \n دانیال کالا";
-        $user = User::where('phone',$request->phone)->get()->first();
+        $user = User::where('phone', $request->phone)->get()->first();
         //using sms.ir as sms api
-        $responseApiToken=Http::asForm()->withHeaders([
-            'Content-Type'=>'application/x-www-form-urlencoded'
-            ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
-            'UserApiKey'=>env('UserApiKey'),
-            'SecretKey'=>env('SecretKey'),
-        ]);
-        if($responseApiToken->successful()){
-            $response=Http::asForm()->withHeaders([
-                'Content-Type'=>'application/x-www-form-urlencoded',
-                'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
-                ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
-                'Messages'=>$message,
-                'MobileNumbers'=>$user->phone,
-                'LineNumber'=>'30006822885772',
-                'SendDateTime'=>'',
-            ]);
-        }
+        // $responseApiToken=Http::asForm()->withHeaders([
+        //     'Content-Type'=>'application/x-www-form-urlencoded'
+        //     ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
+        //     'UserApiKey'=>env('UserApiKey'),
+        //     'SecretKey'=>env('SecretKey'),
+        // ]);
+        // if($responseApiToken->successful()){
+        //     $response=Http::asForm()->withHeaders([
+        //         'Content-Type'=>'application/x-www-form-urlencoded',
+        //         'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
+        //         ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
+        //         'Messages'=>$message,
+        //         'MobileNumbers'=>$user->phone,
+        //         'LineNumber'=>'30006822885772',
+        //         'SendDateTime'=>'',
+        //     ]);
+        // }
         //expire_time 5m
         $expire_time = time() + 500;
         $user->verifyPhone()->create([
@@ -215,7 +217,7 @@ class AuthController extends Controller
     public function confirmVerifyPhoneSmsForgotPassword(Request $request)
     {
         $user_code = $request->code;
-        $user = User::where('phone',$request->phone)->get()->first();
+        $user = User::where('phone', $request->phone)->get()->first();
         $verify_phone_user_model = $user->verifyPhone()->orderBy('id', 'desc')
             ->first();
         if ($verify_phone_user_model->expire_time > time()) {
@@ -272,23 +274,23 @@ class AuthController extends Controller
         $message = "code:$code_sms" . "\n" . "کد تایید ارسال شده شما تا 5 دقیقه معتبر است \n دانیال کالا";
         $user = User::find(auth('api')->id());
         //using sms.ir as sms api
-        $responseApiToken=Http::asForm()->withHeaders([
-            'Content-Type'=>'application/x-www-form-urlencoded'
-            ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
-            'UserApiKey'=>env('UserApiKey'),
-            'SecretKey'=>env('SecretKey'),
-        ]);
-        if($responseApiToken->successful()){
-            $response=Http::asForm()->withHeaders([
-                'Content-Type'=>'application/x-www-form-urlencoded',
-                'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
-                ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
-                'Messages'=>$message,
-                'MobileNumbers'=>$user->phone,
-                'LineNumber'=>'30006822885772',
-                'SendDateTime'=>'',
-            ]);
-        }
+        // $responseApiToken=Http::asForm()->withHeaders([
+        //     'Content-Type'=>'application/x-www-form-urlencoded'
+        //     ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
+        //     'UserApiKey'=>env('UserApiKey'),
+        //     'SecretKey'=>env('SecretKey'),
+        // ]);
+        // if($responseApiToken->successful()){
+        //     $response=Http::asForm()->withHeaders([
+        //         'Content-Type'=>'application/x-www-form-urlencoded',
+        //         'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
+        //         ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
+        //         'Messages'=>$message,
+        //         'MobileNumbers'=>$user->phone,
+        //         'LineNumber'=>'30006822885772',
+        //         'SendDateTime'=>'',
+        //     ]);
+        // }
         //expire_time 5m
         $expire_time = time() + 500;
         $user->verifyPhone()->create([
@@ -322,37 +324,38 @@ class AuthController extends Controller
         );
     }
 
-    public function confirmVerifyEmail($userCode)
+    public function confirmVerifyEmail($userCode, $userId)
     {
-        $user = User::find(auth('api')->id());
-        $verify_email_user_model = $user->verifyEmail()->orderBy('id', 'desc')
-            ->first();
-        if ($verify_email_user_model->expire_time > time()) {
-            if ($verify_email_user_model->code == $userCode) {
-                $user->email_verified_at = time();
-                $user->save();
-                return response(
-                    [
-                        'success' => true,
-                        'message' => 'your email number verified',
-                        'response_code' => 201
-                    ]
-                );
+        $verify_email_user_model = VerifyEmail::where('code', $userCode)->orderBy('id', 'desc')->first();
+        if ($verify_email_user_model) {
+            if ($verify_email_user_model->expire_time > time()) {
+                if ($verify_email_user_model->code == $userCode) {
+                    $user = User::find($userId);
+                    $user->email_verified_at = time();
+                    $user->save();
+                    return response(
+                        [
+                            'success' => true,
+                            'message' => 'your email number verified',
+                            'response_code' => 201
+                        ]
+                    );
+                }
             } else {
                 return response(
                     [
                         'success' => true,
-                        'message' => 'your code is invalid',
-                        'response_code' => 202
+                        'message' => 'your code is expried',
+                        'response_code' => 203
                     ]
                 );
             }
-        } else {
+        }else{
             return response(
                 [
                     'success' => true,
-                    'message' => 'your code is expried',
-                    'response_code' => 203
+                    'message' => 'your code is invalid',
+                    'response_code' => 202
                 ]
             );
         }

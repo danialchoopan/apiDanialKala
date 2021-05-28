@@ -17,7 +17,7 @@ class CreateUserProductOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id');
-            $table->Integer('order_id')->default(0);
+            $table->string('order_product_id')->default('');
             $table->timestamps();
 
             $table->foreign('user_id')

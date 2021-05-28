@@ -45,7 +45,7 @@ class User extends Authenticatable  implements JWTSubject
 
     }
 
-    
+
     public function verifyEmail(){
         return $this->hasMany(verifyEmail::class);
 
@@ -63,9 +63,12 @@ class User extends Authenticatable  implements JWTSubject
         return $this->hasMany(FavoriteProduct::class);
     }
 
-
     public function cart(){
         return $this->hasMany(UserCart::class);
+    }
+
+    public function orders(){
+        return $this->hasMany(Order::class);
     }
 
     /**

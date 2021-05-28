@@ -21,8 +21,10 @@
                         <td>{{$user->name}}</td>
                         <td>{{$user->email}}</td>
                         <td><?php echo $user->role ? "ادمین" : "کاربر" ?></td>
-                        <td>{{$user->created_at->diffForHumans()}}</td>
-                        <td>{{$user->updated_at->diffForHumans()}}</td>
+                        {{-- <td>{{$user->created_at->diffForHumans()}}</td> --}}
+                        <td>{{$user->created_at}}</td>
+                        {{-- <td>{{$user->updated_at->diffForHumans()}}</td> --}}
+                        <td>{{$user->updated_at}}</td>
                     </tr>
                 @endforeach
                 </tbody>

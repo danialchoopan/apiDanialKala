@@ -18,6 +18,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 
@@ -43,14 +44,14 @@ Route::get('home', function () {
     }
     $products = Product::orderBy('id', 'desc')->take(7)->get();
     foreach ($products as $product) {
-        if($product->Productphotos){
+        if ($product->Productphotos) {
             foreach ($product->Productphotos as $productphoto) {
                 if ($productphoto->thumbnail == 1) {
                     $product['thumbnail'] = 'img/' . $productphoto->path;
                 }
             }
-        }else{
-            $product['thumbnail']="";
+        } else {
+            $product['thumbnail'] = "";
         }
         $product['price'] = $product->stores[0]->price_sell;
         $subCategory = SubCategory::find($product->subCategory_id);
@@ -74,27 +75,27 @@ Route::get('home', function () {
 //show single product
 Route::get('product/{id}', function ($id) {
     $product = Product::find($id);
-    if(isset($product->Productphotos)){
+    if (isset($product->Productphotos)) {
         foreach ($product->Productphotos as $productphoto) {
             if ($productphoto->thumbnail == 1) {
                 $product['thumbnail'] = 'img/' . $productphoto->path;
             }
         }
-    }else{
-        $product['thumbnail']="";
+    } else {
+        $product['thumbnail'] = "";
     }
     $product['price'] = $product->stores[0]->price_sell;
     $subCategory = SubCategory::find($product->subCategory_id);
     $product['category'] = $subCategory->category->name;
     $product['Subcategory'] = $subCategory->name;
     return $product;
-    
+
 });
 Route::get('category', function () {
     $categories = Category::orderBy('id', 'desc')->get();
     foreach ($categories as $category) {
         $category['category_photo'] = $category->photo->path;
-        foreach($category->subCategories as $sub_category){
+        foreach ($category->subCategories as $sub_category) {
             $sub_category['sub_category_photo'] = $sub_category->photo->path;
         }
     }
@@ -102,8 +103,8 @@ Route::get('category', function () {
 });
 
 Route::get('subCategory/{id}', function ($id) {
-    $subCategories=Category::find($id)->subCategories;
-    foreach($subCategories as $subCategory){
+    $subCategories = Category::find($id)->subCategories;
+    foreach ($subCategories as $subCategory) {
         $subCategory->photo->path;
     }
     return $subCategories;
@@ -111,19 +112,19 @@ Route::get('subCategory/{id}', function ($id) {
 
 Route::get('categoryproduct/{id}', function ($id) {
     $category = SubCategory::find($id);
-    $show_category_api=[];
-    $show_category_api['category']=$category;
+    $show_category_api = [];
+    $show_category_api['category'] = $category;
 
     $products = $category->products;
     foreach ($products as $product) {
-        if($product->Productphotos){
+        if ($product->Productphotos) {
             foreach ($product->Productphotos as $productphoto) {
                 if ($productphoto->thumbnail == 1) {
                     $product['thumbnail'] = 'img/' . $productphoto->path;
                 }
-           }
-        }else{
-            $product['thumbnail']="";
+            }
+        } else {
+            $product['thumbnail'] = "";
         }
         $product['price'] = $product->stores[0]->price_sell;
         $subCategory = SubCategory::find($product->subCategory_id);
@@ -145,7 +146,7 @@ Route::get('categoryproduct/{id}', function ($id) {
 // show product propertises
 Route::get('product/{id}/properties', function ($id) {
     $prodouct = Product::find($id);
-    foreach($prodouct->properties_products as $properties){
+    foreach ($prodouct->properties_products as $properties) {
         $properties->sub_properties_product;
     }
     return $prodouct;
@@ -155,11 +156,11 @@ Route::get('product/{id}/properties', function ($id) {
 Route::get("product/{id}/review", function ($id) {
     $productId = $id;
     $review;
-    if(Product::find($id)->review){
+    if (Product::find($id)->review) {
         $review = Product::find($id)->review;
-    }else{
+    } else {
         $review = Product::find($id)->review()->create([
-            'review'=>''
+            'review' => ''
         ]);
     }
     return Product::find($id)->review;
@@ -167,52 +168,81 @@ Route::get("product/{id}/review", function ($id) {
 
 
 //user auth api route
-Route::post('auth/user/register', [AuthController::class,'register']);
-Route::post('auth/user/login', [AuthController::class,'login']);
-Route::post('auth/user/checkToken', [AuthController::class,'checkToken']);
-Route::post('auth/user/getUserInfo', [AuthController::class,'getUserInfo']);
-Route::patch('auth/user/updateUserInfo', [AuthController::class,'updateUserInfo']);
+Route::post('auth/user/register', [AuthController::class, 'register']);
+Route::post('auth/user/login', [AuthController::class, 'login']);
+Route::post('auth/user/checkToken', [AuthController::class, 'checkToken']);
+Route::post('auth/user/getUserInfo', [AuthController::class, 'getUserInfo']);
+Route::patch('auth/user/updateUserInfo', [AuthController::class, 'updateUserInfo']);
 //change password
-Route::post('auth/user/changePassword', [AuthController::class,'changePassword']);
+Route::post('auth/user/changePassword', [AuthController::class, 'changePassword']);
 
 //verify phone number
-Route::post('auth/user/checkIfPhoneVerified', [AuthController::class,'checkIfPhoneVerified']);
-Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class,'sendVerifyPhoneSms']);
-Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class,'confirmVerifyPhoneSms']);
+Route::post('auth/user/checkIfPhoneVerified', [AuthController::class, 'checkIfPhoneVerified']);
+Route::post('auth/user/sendVerifyPhoneSms', [AuthController::class, 'sendVerifyPhoneSms']);
+Route::post('auth/user/confirmVerifyPhoneSms', [AuthController::class, 'confirmVerifyPhoneSms']);
 //verify email
-Route::post('auth/user/sendVerifyEmail', [AuthController::class,'sendVerifyEmail']);
-Route::get('auth/user/confirmVerifyEmail/{userCode}', [AuthController::class,'confirmVerifyEmail']);
+Route::post('auth/user/sendVerifyEmail', [AuthController::class, 'sendVerifyEmail']);
+Route::get('auth/user/confirmVerifyEmail/{userCode}/{userId}', [AuthController::class, 'confirmVerifyEmail']);
 
 //forgot password
-Route::post('auth/user/checkUserPhoneForForgotPassword',[AuthController::class,'checkUserPhoneForForgotPassword']);
-Route::post('auth/user/sendVerifyPhoneSmsForgotPassword',[AuthController::class,'sendVerifyPhoneSmsForgotPassword']);
-Route::post('auth/user/confirmVerifyPhoneSmsForgotPassword',[AuthController::class,'confirmVerifyPhoneSmsForgotPassword']);
-Route::post('auth/user/changePasswordForgot',[AuthController::class,'changePasswordForgot']);
+Route::post('auth/user/checkUserPhoneForForgotPassword', [AuthController::class, 'checkUserPhoneForForgotPassword']);
+Route::post('auth/user/sendVerifyPhoneSmsForgotPassword', [AuthController::class, 'sendVerifyPhoneSmsForgotPassword']);
+Route::post('auth/user/confirmVerifyPhoneSmsForgotPassword', [AuthController::class, 'confirmVerifyPhoneSmsForgotPassword']);
+Route::post('auth/user/changePasswordForgot', [AuthController::class, 'changePasswordForgot']);
 
 
 //end user auth api route
 
-Route::group(['middleware' => ['jwt_token']],function () {
+Route::group(['middleware' => ['jwt_token']], function () {
     //addess
-    Route::apiResource('user/addess',ApiAddessController::class);
-    Route::apiResource('user/cart',ApiUserCartController::class);
+    Route::apiResource('user/addess', ApiAddessController::class);
+    Route::apiResource('user/cart', ApiUserCartController::class);
     //favorite product
-    Route::post('favorite/product/all',[FavoriteProductUserController::class,'index']);
-    Route::post('favorite/product',[FavoriteProductUserController::class,'store']);
-    Route::post('favorite/product/check',[FavoriteProductUserController::class,'checkFavorite']);
+    Route::post('favorite/product/all', [FavoriteProductUserController::class, 'index']);
+    Route::post('favorite/product', [FavoriteProductUserController::class, 'store']);
+    Route::post('favorite/product/check', [FavoriteProductUserController::class, 'checkFavorite']);
     //user order
-    Route::apiResource('user/order',ApiUserOrderProductController::class);
+    Route::apiResource('user/order', ApiUserOrderProductController::class);
 });
-Route::apiResource('product/comment',ApiProductCommentController::class);
+Route::apiResource('product/comment', ApiProductCommentController::class);
 
-Route::post('product/search', [ApiProductController::class,'search']);
-Route::get('show/all/product', [ApiProductController::class,'index']);
+Route::post('product/search', [ApiProductController::class, 'search']);
+Route::get('show/all/product', [ApiProductController::class, 'index']);
 
 Route::get('states/', function () {
-    $states=DB::select('select * from `locate` where `subid` = ?', [1]);
+    $states = DB::select('select * from `locate` where `subid` = ?', [1]);
     return response($states);
 });
 Route::get('states/{id}', function ($id) {
-    $cities=DB::select('select * from `locate` where `subid` = ?', [$id]);
+    $cities = DB::select('select * from `locate` where `subid` = ?', [$id]);
     return response($cities);
+});
+
+Route::post('idpaytest', function (Request $request) {
+    $order = \App\Models\Order::where('order_product_id', $request->order_id)->get()->first();
+    $order->status = $request->status;
+    //send user to the payment link
+    $responseIdPay = Http::withHeaders([
+        'X-SANDBOX' => 'true',
+        'Content-Type' => 'application/json',
+        'X-API-KEY' => env('idPayApiKey')
+    ])->post('https://api.idpay.ir/v1.1/payment/verify', [
+        'id' => $order->id_transaction,
+        'order_id' => $order->link_transaction,
+    ]);
+    if ($responseIdPay->successful()) {
+        return $responseIdPay;
+        if ($responseIdPay['status'] == 100) {
+            return
+                "<h1><center>" .
+                "پرداخت با موفقیت انجام شد."
+                . "</center></h1>";
+
+        } else {
+            return
+                "<h1><center>" .
+                "مشکلی پیش آمده پرداخت شما با موفیت انجام نشد"
+                . "</center></h1>";
+        }
+    }
 });
