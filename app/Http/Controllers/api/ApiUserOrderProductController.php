@@ -35,7 +35,7 @@ class ApiUserOrderProductController extends Controller
         $user = auth('api')->user();
         $cart_products = [];
         $numberOrder = $this->sms_code_validation_generator(20);
-        $amount = $request->amount;
+        $amount = $request->amount; //convert IRT to IRR
         foreach ($carts as $cart) {
             UserProductOrder::create([
                 'user_id' => $cart->user_id,
@@ -48,7 +48,7 @@ class ApiUserOrderProductController extends Controller
             'order_product_id' => $numberOrder,
             'status' => 0,
             'price' => $amount,
-            'description' => $request->description,
+            'description' => $request->description ?? "",
             'user_addesse_id' => $request->address_id,
             'user_id' => $user->id
         ]);
@@ -60,7 +60,7 @@ class ApiUserOrderProductController extends Controller
             'X-API-KEY' => env('idPayApiKey')
         ])->post('https://api.idpay.ir/v1.1/payment', [
             'order_id' => $numberOrder,
-            'amount' => $amount,
+            'amount' => $amount*10,
             'name' => $user->name,
             'phone' => $user->phone,
             'mail' => $user->email,

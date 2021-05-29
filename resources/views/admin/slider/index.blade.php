@@ -18,7 +18,7 @@
                 @foreach($sliders as $slider)
                     <tr>
                         <td>{{$slider->id}}</td>
-                        <td><img src="{{env('DEFAULT_URL','')}}storage/{{$slider->photo->path}}"
+                        <td><img src="{{env('APP_URL')."storage/".$slider->photo->path}}"
                                  width="100"></td>
                         <td><a href="{{route('slider.edit',$slider->id)}}">{{$slider->title}}</a></td>
                         <td>{{$slider->created_at->diffForHumans()}}</td>

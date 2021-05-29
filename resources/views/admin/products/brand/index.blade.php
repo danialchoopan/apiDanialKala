@@ -36,7 +36,7 @@
                             <td><a href="{{route('brand.show',$brand->id)}}">{{$brand->name}}</a></td>
                             <td><img
                                     width="100"
-                                    src="{{env('DEFAULT_URL','')}}storage/{{$brand->photo->path}}"></td>
+                                    src="{{env('APP_URL')."storage/".$brand->photo->path}}"></td>
                             <td>{{$brand->created_at->diffForHumans()}}</td>
                             <td>
                                 <form action="{{route('brand.destroy',$brand->id)}}" method="post">

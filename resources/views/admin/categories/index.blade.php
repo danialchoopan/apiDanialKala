@@ -37,7 +37,7 @@
                             <td>
                                 <img
                                     width="100"
-                                    src="{{env('DEFAULT_URL','')}}storage/{{$category->photo->path }}"
+                                    src="{{env('APP_URL')."storage/".$category->photo->path}}"
                                     alt="">
                             </td>
                             <td>{{$category->created_at}}</td>

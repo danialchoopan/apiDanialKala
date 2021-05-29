@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminSliderController;
 use App\Http\Controllers\AdminStoreController;
 use App\Http\Controllers\AdminSubCategoryController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\OrdersAdminController;
 use App\Models\Category;
 use App\Models\Photo;
 use App\Models\Product;
@@ -46,6 +47,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminUser']], funct
     Route::resource('color', AdminColorController::class);
     Route::resource('brand', AdminBrandController::class);
     Route::resource('slider', AdminSliderController::class);
+    Route::resource('orders',OrdersAdminController::class);
+    Route::get('orders/status/{status}', [OrdersAdminController::class, 'showByStatus'])->name('status.order');
+    
 
     Route::get('store/{id_product}', [AdminStoreController::class, 'index'])->name('store.index');
     Route::delete('store/{id}', [AdminStoreController::class, 'delete'])->name('store.delete');

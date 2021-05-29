@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-sm-4">
-            <img src="{{env('DEFAULT_URL','')}}storage/{{$slider->photo->path}}" width="100%" alt="">
+            <img src="{{env('APP_URL')."storage/".$slider->photo->path}}" width="100%" alt="">
         </div>
         <div class="col-sm-8">
             <form action="{{route('slider.update',$slider->id)}}" method="post" enctype="multipart/form-data">

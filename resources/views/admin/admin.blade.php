@@ -17,12 +17,8 @@
             <a class="navbar-brand m-1">مدیریت اپلیکشین</a>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
                 <ul class="navbar-nav mr-auto">
-
                     <li class="nav-item dropdown">
-
-
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="">خروج</a>
                         </div>
@@ -113,22 +109,6 @@
                         </ul>
                     </div>
 
-
-                    <li class="cp-admin-menu "
-                        style="background-color: #3856ff"
-                        data-bs-toggle="collapse"
-                        href="#item_media_management"
-                        aria-expanded="false"
-                        aria-controls="item_media_management">
-                        <span class="text-decoration-none" style="color: black">مدیریت رسانه</span>
-                    </li>
-                    <div class="collapse multi-collapse" id="item_media_management">
-                        <ul class="cp-admin-menu-ul">
-                            <li><a href="" class="text-decoration-none">نمایش رسانه</a></li>
-                            <li><a href="" class="text-decoration-none">افزودن رسانه</a></li>
-                        </ul>
-                    </div>
-
                     <li class="cp-admin-menu "
                         style="background-color: #2effe1"
                         data-bs-toggle="collapse"
@@ -151,6 +131,15 @@
                         </ul>
                     </div>
 
+                    <a href="{{route('orders.index')}}">
+                        <li class="cp-admin-menu "
+                            style="background-color: #2effe1"
+                            data-bs-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="item_slider_management">
+                            <span class="text-decoration-none" style="color: black">سفارشات</span>
+                        </li>
+                    </a>
 
                 </ul>
             </div>

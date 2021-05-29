@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MailValidateUser;
 use App\Models\VerifyEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\Fluent\Concerns\Has;
 
 class AuthController extends Controller
@@ -307,15 +309,21 @@ class AuthController extends Controller
 
     public function sendVerifyEmail()
     {
-        $code_emial = $this->sms_code_validation_generator(20);
+        $code_email = $this->sms_code_validation_generator(20);
         $message = " ";
         $user = User::find(auth('api')->id());
         //expire_time 1day
         $expire_time = time() + 86400;
         $user->verifyEmail()->create([
-            'code' => $code_emial,
+            'code' => $code_email,
             'expire_time' => $expire_time
         ]);
+        //send email
+        $details = [
+            'user_id' => $user->id,
+            'validate_code' => $code_email
+        ];
+        Mail::to($user->email)->send(new MailValidateUser($details));
         return response(
             [
                 'success' => true,

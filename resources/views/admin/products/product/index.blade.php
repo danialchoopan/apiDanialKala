@@ -26,7 +26,7 @@
                             @foreach($product->Productphotos as $photo)
                                 @if($photo->thumbnail==1)
                                     <img style="width: 200px;"
-                                         src="{{env('DEFAULT_URL','')}}img/{{$photo->path}}" alt="">
+                                         src="{{env('APP_URL')}}img/{{$photo->path}}" alt="">
                                 @endif
                             @endforeach
                         </td>

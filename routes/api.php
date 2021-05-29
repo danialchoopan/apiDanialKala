@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 
@@ -221,28 +222,46 @@ Route::get('states/{id}', function ($id) {
 Route::post('idpaytest', function (Request $request) {
     $order = \App\Models\Order::where('order_product_id', $request->order_id)->get()->first();
     $order->status = $request->status;
-    //send user to the payment link
-    $responseIdPay = Http::withHeaders([
-        'X-SANDBOX' => 'true',
-        'Content-Type' => 'application/json',
-        'X-API-KEY' => env('idPayApiKey')
-    ])->post('https://api.idpay.ir/v1.1/payment/verify', [
-        'id' => $order->id_transaction,
-        'order_id' => $order->link_transaction,
-    ]);
-    if ($responseIdPay->successful()) {
-        return $responseIdPay;
-        if ($responseIdPay['status'] == 100) {
-            return
+    $order->save();
+    if($request->status==10){
+        $order = \App\Models\Order::where('order_product_id', $request->order_id)->get()->first();
+        //send user to the payment link
+        $responseIdPay = Http::withHeaders([
+            'X-SANDBOX' => 'true',
+            'Content-Type' => 'application/json',
+            'X-API-KEY' => env('idPayApiKey')
+        ])->post('https://api.idpay.ir/v1.1/payment/verify', [
+            'id' => $order->id_transaction,
+            'order_id' => $order->order_product_id,
+        ]);
+        if ($responseIdPay->successful()) {
+            if($responseIdPay['status']==101){
+                return
                 "<h1><center>" .
-                "پرداخت با موفقیت انجام شد."
+                "پرداخت شما قبلا تایید شده است"
                 . "</center></h1>";
-
-        } else {
-            return
-                "<h1><center>" .
-                "مشکلی پیش آمده پرداخت شما با موفیت انجام نشد"
-                . "</center></h1>";
+            }
+            if ($responseIdPay['status'] == 100) {
+                $orderNew = \App\Models\Order::where('order_product_id', $request->order_id)->get()->first();
+                $orderNew->status = 100;
+                $orderNew->save();
+                return view('api.status',['status' =>true,'order_number'=>$order->order_product_id]);
+            } else {
+                return view('api.status',['status' =>false,'order_number'=>'error']);
+            }
+        }else {
+            return view('api.status',['status' =>false,'order_number'=>'error']);
         }
+    }else {
+        return view('api.status',['status' =>false,'order_number'=>'error']);
     }
+});
+
+Route::get('sende321mail', function () {
+    $data = array('name'=>"Virat Gandhi");
+    Mail::send(['text'=>'mail'], $data, function($message) {
+        $message->to('abc@gmail.com', 'Tutorials Point')->subject
+        ('Laravel Basic Testing Mail');
+        $message->from('xyz@gmail.com','Virat Gandhi');
+    });
 });

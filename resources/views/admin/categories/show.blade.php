@@ -47,7 +47,7 @@
                             <td>
                                 <img
                                     width="100"
-                                    src="{{env('DEFAULT_URL','')}}storage/{{$subCategory->photo->path}}" alt="">
+                                    src="{{env('APP_URL')."storage/".$subCategory->photo->path}}" alt="">
                             </td>
                             <td>{{$subCategory->created_at->diffForHumans()}}</td>
                             <td>
