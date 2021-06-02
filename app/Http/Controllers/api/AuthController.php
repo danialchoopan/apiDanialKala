@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\Fluent\Concerns\Has;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt_token', ['except' => ['login', 'register', 'checkToken', 'changePasswordForgot', 'checkUserPhoneForForgotPassword', 'sendVerifyPhoneSmsForgotPassword', 'confirmVerifyPhoneSmsForgotPassword','confirmVerifyEmail']]);
+        $this->middleware('jwt_token', ['except' => ['login', 'register', 'checkToken', 'changePasswordForgot', 'checkUserPhoneForForgotPassword', 'sendVerifyPhoneSmsForgotPassword', 'confirmVerifyPhoneSmsForgotPassword', 'confirmVerifyEmail']]);
     }
 
 
@@ -323,7 +325,32 @@ class AuthController extends Controller
             'user_id' => $user->id,
             'validate_code' => $code_email
         ];
-        Mail::to($user->email)->send(new MailValidateUser($details));
+        $validation_url = env('APP_URL') . 'api/auth/user/confirmVerifyEmail/' . $details['validate_code'] . '/' . $details['user_id'];
+        $email_body = "
+<center>
+        دانیال کالا
+        <br>
+        برای تایید حساب خود روی لینک زیر کلیک کنید
+        <br>
+        <a href='$validation_url'>تایید حساب کاربری</a>
+
+        <br>
+        " . $validation_url . '</center>';
+
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = '465';
+        $mail->isHTML(true);
+        $mail->Username = env('GMAIL_USERNAME');
+        $mail->Password = env('GMAIL_PASSWORD');
+        $mail->setFrom('no-reply@danialchoopan.ir');
+        $mail->Subject = 'validate email danial kala';
+        $mail->Body = $email_body;
+        $mail->addAddress($user->email);
+        $mail->send();
         return response(
             [
                 'success' => true,
@@ -341,31 +368,34 @@ class AuthController extends Controller
                     $user = User::find($userId);
                     $user->email_verified_at = time();
                     $user->save();
-                    return response(
-                        [
-                            'success' => true,
-                            'message' => 'your email number verified',
-                            'response_code' => 201
-                        ]
-                    );
+                    return view('api.emailStatus', ['status' => true]);
+//                    return response(
+//                        [
+//                            'success' => true,
+//                            'message' => 'پست الکترونیک شما با موفقیت تایید شد',
+//                            'response_code' => 201
+//                        ]
+//                    );
                 }
             } else {
-                return response(
-                    [
-                        'success' => true,
-                        'message' => 'your code is expried',
-                        'response_code' => 203
-                    ]
-                );
+                return view('api.emailStatus', ['status' => false]);
+//                return response(
+//                    [
+//                        'success' => true,
+//                        'message' => 'کد شما منقضی شده است',
+//                        'response_code' => 203
+//                    ]
+//                );
             }
-        }else{
-            return response(
-                [
-                    'success' => true,
-                    'message' => 'your code is invalid',
-                    'response_code' => 202
-                ]
-            );
+        } else {
+            return view('api.emailStatus', ['status' => false]);
+//            return response(
+//                [
+//                    'success' => true,
+//                    'message' => 'کد شما اشتباه است',
+//                    'response_code' => 202
+//                ]
+//            );
         }
     }
 
