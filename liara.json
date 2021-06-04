@@ -1,0 +1,12 @@
+{
+    "disks": [
+      {
+        "name": "disk",
+        "mountTo": "storage"
+      },
+      {
+        "name": "imgs",
+        "mountTo": "public/img"
+      }
+    ]
+  }
