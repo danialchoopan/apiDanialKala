@@ -10,14 +10,15 @@
                 @csrf
                 <fieldset class="form-group mb-3">
                     <label>نام</label>
-                    <input class="form-control" name="sub_category_name" placeholder="نام را وارد کنید ...">
+                    <input class="form-control" name="sub_category_name" placeholder="نام را وارد کنید ..." required>
                 </fieldset>
 
                 <fieldset class="form-group mb-3">
                     <label>عکس</label>
                     <input type="file"
                            class="form-control"
-                           name="sub_category_photo">
+                           name="sub_category_photo"
+                           required>
                 </fieldset>
 
                 <input type="hidden" name="sub_category_id" value="{{$category->id}}">

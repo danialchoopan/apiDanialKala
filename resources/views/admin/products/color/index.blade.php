@@ -7,10 +7,10 @@
                 @csrf
                 <fieldset class="form-group mb-3">
                     <label>نام</label>
-                    <input class="form-control" name="color_name" placeholder="نام را وارد کنید ...">
+                    <input class="form-control" name="color_name" placeholder="نام را وارد کنید ..." required>
                     <br>
                     <label>کد رنگ</label>
-                    <input class="form-control" name="color_hex" type="color" placeholder="کد رنگ را وارد کنید ...">
+                    <input class="form-control" name="color_hex" type="color" placeholder="کد رنگ را وارد کنید ..." required>
                 </fieldset>
                 <div class="d-grid gap-2">
                     <input type="submit" value="افزودن رنگ" class="btn btn-primary">

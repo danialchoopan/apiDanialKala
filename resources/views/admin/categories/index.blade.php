@@ -7,11 +7,11 @@
                 @csrf
                 <fieldset class="form-group mb-3">
                     <label>نام</label>
-                    <input class="form-control" name="category_name" placeholder="نام را وارد کنید ...">
+                    <input class="form-control" name="category_name" placeholder="نام را وارد کنید ..." required>
                 </fieldset>
                 <fieldset class="form-group mb-3">
                     <label>عکس</label>
-                    <input class="form-control" type="file" name="category_photo" placeholder="عکس را وارد کنید ...">
+                    <input class="form-control" type="file" name="category_photo" placeholder="عکس را وارد کنید ..." required>
                 </fieldset>
                 <div class="d-grid gap-2">
                     <input type="submit" value="افزودن دسته بندی" class="btn btn-primary">

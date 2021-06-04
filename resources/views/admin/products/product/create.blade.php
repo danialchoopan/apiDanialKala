@@ -6,12 +6,12 @@
         @csrf
         <fieldset class="form-group  mb-3">
             <label>عنوان</label>
-            <input class="form-control" name="product_title" placeholder="عنوان را وارد کنید ...">
+            <input class="form-control" name="product_title" placeholder="عنوان را وارد کنید ..." required>
         </fieldset>
 
         <fieldset class="form-group  mb-3">
             <label>برند</label>
-            <select name="product_brand" class="form-control">
+            <select name="product_brand" class="form-control" required>
                 @foreach($brands as $brand)
                     <option value="{{$brand->id}}">{{$brand->name}}</option>
                 @endforeach
@@ -20,7 +20,7 @@
 
         <fieldset class="form-group  mb-3">
             <label>دسته بندی</label>
-            <select name="product_category" id="category_parent" class="form-control">
+            <select name="product_category" id="category_parent" class="form-control" required>
                 <option value="0">دسته بندی نشده !</option>
                 @foreach($categories as $category)
                     <option value="{{$category->id}}">{{$category->name}}</option>
@@ -30,14 +30,14 @@
 
         <fieldset class="form-group  mb-3">
             <label>زیردسته</label>
-            <select name="product_category_sub" id="sub_categorys" class="form-control">
+            <select name="product_category_sub" id="sub_categorys" class="form-control" required>
 
             </select>
         </fieldset>
 
         <fieldset class="form-group  mb-3">
             <label>وضعیت</label>
-            <select name="product_status" class="form-control">
+            <select name="product_status" class="form-control" required>
                 <option value="1">عرضه شده</option>
                 <option value="2">به زودی</option>
                 <option value="3">توقف تولید</option>
@@ -57,7 +57,7 @@
 
         <fieldset class="form-group mb-3">
             <label>بدنه</label>
-            <textarea class="form-control" name="product_body" rows="9"></textarea>
+            <textarea class="form-control" name="product_body" rows="9" required></textarea>
         </fieldset>
 
         <div class="d-grid gap-2">

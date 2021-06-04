@@ -15,12 +15,12 @@
                 <fieldset class="form-group mb-3">
                     <label>نام</label>
                     <input class="form-control" name="brand_name" placeholder="نام را وارد کنید ..."
-                           value="{{$brand->name}}">
+                           value="{{$brand->name}}" required>
                 </fieldset>
 
                 <fieldset class="form-group mb-3">
                     <label>عکس</label>
-                    <input type="file" name="brand_logo" class="form-control">
+                    <input type="file" name="brand_logo" class="form-control" required>
                 </fieldset>
                 <div class="d-grid gap-2 mb-3">
                     <input type="submit" value="بروزرسانی برند" class="btn btn-primary">

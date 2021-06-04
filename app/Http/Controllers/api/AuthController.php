@@ -187,23 +187,23 @@ class AuthController extends Controller
         $message = "code:$code_sms" . "\n" . "کد تایید ارسال شده شما تا 5 دقیقه معتبر است \n دانیال کالا";
         $user = User::where('phone', $request->phone)->get()->first();
         //using sms.ir as sms api
-        // $responseApiToken=Http::asForm()->withHeaders([
-        //     'Content-Type'=>'application/x-www-form-urlencoded'
-        //     ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
-        //     'UserApiKey'=>env('UserApiKey'),
-        //     'SecretKey'=>env('SecretKey'),
-        // ]);
-        // if($responseApiToken->successful()){
-        //     $response=Http::asForm()->withHeaders([
-        //         'Content-Type'=>'application/x-www-form-urlencoded',
-        //         'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
-        //         ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
-        //         'Messages'=>$message,
-        //         'MobileNumbers'=>$user->phone,
-        //         'LineNumber'=>'30006822885772',
-        //         'SendDateTime'=>'',
-        //     ]);
-        // }
+        $responseApiToken=Http::asForm()->withHeaders([
+            'Content-Type'=>'application/x-www-form-urlencoded'
+            ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
+            'UserApiKey'=>env('UserApiKey'),
+            'SecretKey'=>env('SecretKey'),
+        ]);
+        if($responseApiToken->successful()){
+            $response=Http::asForm()->withHeaders([
+                'Content-Type'=>'application/x-www-form-urlencoded',
+                'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
+                ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
+                'Messages'=>$message,
+                'MobileNumbers'=>$user->phone,
+                'LineNumber'=>'30006822885772',
+                'SendDateTime'=>'',
+            ]);
+        }
         //expire_time 5m
         $expire_time = time() + 500;
         $user->verifyPhone()->create([
@@ -278,23 +278,23 @@ class AuthController extends Controller
         $message = "code:$code_sms" . "\n" . "کد تایید ارسال شده شما تا 5 دقیقه معتبر است \n دانیال کالا";
         $user = User::find(auth('api')->id());
         //using sms.ir as sms api
-        // $responseApiToken=Http::asForm()->withHeaders([
-        //     'Content-Type'=>'application/x-www-form-urlencoded'
-        //     ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
-        //     'UserApiKey'=>env('UserApiKey'),
-        //     'SecretKey'=>env('SecretKey'),
-        // ]);
-        // if($responseApiToken->successful()){
-        //     $response=Http::asForm()->withHeaders([
-        //         'Content-Type'=>'application/x-www-form-urlencoded',
-        //         'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
-        //         ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
-        //         'Messages'=>$message,
-        //         'MobileNumbers'=>$user->phone,
-        //         'LineNumber'=>'30006822885772',
-        //         'SendDateTime'=>'',
-        //     ]);
-        // }
+        $responseApiToken=Http::asForm()->withHeaders([
+            'Content-Type'=>'application/x-www-form-urlencoded'
+            ])->post(env('SMS_DOT_IR_RESTFUL_URL_GET_TOKEN'),[
+            'UserApiKey'=>env('UserApiKey'),
+            'SecretKey'=>env('SecretKey'),
+        ]);
+        if($responseApiToken->successful()){
+            $response=Http::asForm()->withHeaders([
+                'Content-Type'=>'application/x-www-form-urlencoded',
+                'x-sms-ir-secure-token'=>$responseApiToken['TokenKey'],
+                ])->post(env('SMS_DOT_IR_RESTFUL_URL_SEND_SMS'),[
+                'Messages'=>$message,
+                'MobileNumbers'=>$user->phone,
+                'LineNumber'=>'30006822885772',
+                'SendDateTime'=>'',
+            ]);
+        }
         //expire_time 5m
         $expire_time = time() + 500;
         $user->verifyPhone()->create([

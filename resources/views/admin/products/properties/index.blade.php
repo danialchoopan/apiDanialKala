@@ -10,7 +10,7 @@
                 @method("post")
                 <fieldset class="form-group">
                     <label>نام</label>
-                    <input class="form-control" name="name" placeholder="نام را وارد کنید ...">
+                    <input class="form-control" name="name" placeholder="نام را وارد کنید ..." required>
                     <br>
                 </fieldset>
                 <input type="submit" value="افزودن مشخصات" class="btn btn-primary">

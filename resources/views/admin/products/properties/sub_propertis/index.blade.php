@@ -9,7 +9,7 @@
                 @method("post")
                 <fieldset class="form-group">
                     <label>نام</label>
-                    <input class="form-control" name="name" placeholder="نام را وارد کنید ...">
+                    <input class="form-control" name="name" placeholder="نام را وارد کنید ..." required>
                     <br>
                     <input class="form-control" name="value_properties" placeholder="مقدار را وارد کنید ...">
                     <br>

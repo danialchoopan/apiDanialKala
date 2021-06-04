@@ -10,12 +10,12 @@
             <label>عنوان</label>
             <input class="form-control" name="product_title"
                    value="{{$product->name}}"
-                   placeholder="عنوان را وارد کنید ...">
+                   placeholder="عنوان را وارد کنید ..." required>
         </fieldset>
 
         <fieldset class="form-group  mb-3">
             <label>برند</label>
-            <select name="product_brand" class="form-control">
+            <select name="product_brand" class="form-control" required>
                 @foreach($brands as $brand)
 
                     @if($product->brnad_id==$brand->id)
@@ -30,7 +30,7 @@
 
         <fieldset class="form-group  mb-3">
             <label>دسته بندی</label>
-            <select name="product_category" id="category_parent" class="form-control">
+            <select name="product_category" id="category_parent" class="form-control" required>
                 <option value="0">دسته بندی نشده !</option>
                 @foreach($categories as $category)
 
@@ -46,14 +46,14 @@
 
         <fieldset class="form-group  mb-3">
             <label>زیردسته</label>
-            <select name="product_category_sub" id="sub_categorys" class="form-control">
+            <select name="product_category_sub" id="sub_categorys" class="form-control" required>
 
             </select>
         </fieldset>
 
         <fieldset class="form-group  mb-3">
             <label>وضعیت</label>
-            <select name="product_status" class="form-control">
+            <select name="product_status" class="form-control" required>
                 <option value="1">عرضه شده</option>
                 <option value="2">به زودی</option>
                 <option value="3">توقف تولید</option>
@@ -75,7 +75,7 @@
 
         <fieldset class="form-group mb-3">
             <label>بدنه</label>
-            <textarea class="form-control" name="product_body" rows="9">{{$product->description}}</textarea>
+            <textarea class="form-control" name="product_body" rows="9" required>{{$product->description}}</textarea>
         </fieldset>
 
         <div class="d-grid gap-2">

@@ -7,11 +7,11 @@
                 @csrf
                 <fieldset class="form-group mb-3">
                     <label>نام</label>
-                    <input class="form-control" name="brand_name" placeholder="نام را وارد کنید ...">
+                    <input class="form-control" name="brand_name" placeholder="نام را وارد کنید ..." required>
                 </fieldset>
                 <fieldset class="form-group mb-3">
                     <label>لگو برند</label>
-                    <input class="form-control" type="file" name="brand_logo">
+                    <input class="form-control" type="file" name="brand_logo" required>
                 </fieldset>
                 <div class="d-grid gap-2">
                     <input type="submit" value="افزودن برند" class="btn btn-primary">

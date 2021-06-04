@@ -6,11 +6,11 @@
         @csrf
         <fieldset class="form-group mb-3">
             <label>تعداد</label>
-            <input class="form-control" name="store_number" placeholder="تعداد را وارد کنید">
+            <input class="form-control" name="store_number" placeholder="تعداد را وارد کنید" required>
         </fieldset>
         <fieldset class="form-group mb-3">
             <label>گارانتی</label>
-            <input class="form-control" name="store_warranty" placeholder="گارانتی را وارد کنید ...">
+            <input class="form-control" name="store_warranty" placeholder="گارانتی را وارد کنید ..." required>
         </fieldset>
 
         <fieldset class="form-group mb-3">
@@ -25,12 +25,12 @@
 
         <fieldset class="form-group mb-3">
             <label>قیمت خرید</label>
-            <input class="form-control" name="store_price_buy" placeholder="گارانتی را وارد کنید ...">
+            <input class="form-control" name="store_price_buy" required>
         </fieldset>
 
         <fieldset class="form-group mb-3">
             <label>فیمت فروش</label>
-            <input class="form-control" name="store_price_sell" placeholder="گارانتی را وارد کنید ...">
+            <input class="form-control" name="store_price_sell" required>
         </fieldset>
 
         <input type="submit" value="افزودن انبار داری محصول" class="btn btn-primary">

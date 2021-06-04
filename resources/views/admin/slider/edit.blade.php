@@ -13,7 +13,7 @@
                     <label>عنوان</label>
                     <input class="form-control" name="slider_title"
                            value="{{$slider->title}}"
-                           placeholder="عنوان را وارد کنید ...">
+                           placeholder="عنوان را وارد کنید ..." >
                 </fieldset>
 
                 <fieldset class="form-group mb-3">
@@ -22,7 +22,7 @@
                 </fieldset>
 
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="submit">بروزرسانی محصول</button>
+                    <button class="btn btn-primary" type="submit">بروزرسانی</button>
                 </div>
             </form>
         </div>

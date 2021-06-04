@@ -6,12 +6,12 @@
         @csrf
         <fieldset class="form-group mb-3">
             <label>عنوان</label>
-            <input class="form-control" name="slider_title" placeholder="عنوان را وارد کنید ...">
+            <input class="form-control" name="slider_title" placeholder="عنوان را وارد کنید ..." required>
         </fieldset>
 
         <fieldset class="form-group mb-3">
             <label>بنر</label>
-            <input type="file" class="form-control" name="slider_photo">
+            <input type="file" class="form-control" name="slider_photo" required>
         </fieldset>
 
         <div class="d-grid gap-2">
