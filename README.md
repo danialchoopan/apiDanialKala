@@ -9,7 +9,7 @@
 
 ## About danial kala
 
-danial kala api is a simple api for the (danial kala app)[https://github.com/danialchoopan/DanialKala]
+danial kala api is a simple api for the [danial kala app](https://github.com/danialchoopan/DanialKala)
 i used JWT for token auth 
 
 ## how setup project
