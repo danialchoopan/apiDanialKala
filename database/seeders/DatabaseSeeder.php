@@ -129,5 +129,39 @@ class DatabaseSeeder extends Seeder
                 'title' => 'اسلایدر شماره ' . $i
             ]);
         }
+
+        // Sample Orders for Dashboard Stats
+        $users = User::all();
+        $products = Product::all();
+        foreach ($users as $user) {
+            $address = \App\Models\UserAddess::create([
+                'user_id' => $user->id,
+                'city_name' => 'تهران',
+                'state_name' => 'تهران',
+                'address' => 'خیابان نمونه، کوچه نمونه، پلاک ۱',
+                'post_code' => '1234567890',
+                'addess_phone' => $user->phone,
+                'lanline_phone' => '02112345678',
+                'city_code' => '021',
+            ]);
+        }
+        $addresses = \App\Models\UserAddess::all();
+
+        for ($i = 1; $i <= 10; $i++) {
+            $product = $products->random();
+            $user = $users->random();
+            $address = $addresses->where('user_id', $user->id)->first();
+            $price = $product->stores->first()->price_sell;
+
+            \App\Models\Order::create([
+                'user_id' => $user->id,
+                'order_product_id' => 'ORD-' . strtoupper(bin2hex(random_bytes(4))),
+                'price' => $price,
+                'status' => rand(0, 1) ? 100 : 0, // 100 = Paid, 0 = Pending
+                'id_transaction' => 'TRANS-' . bin2hex(random_bytes(8)),
+                'description' => 'سفارش تستی شماره ' . $i,
+                'user_addesse_id' => $address->id,
+            ]);
+        }
     }
 }
