@@ -1,0 +1,80 @@
+Starting Laravel development server: http://127.0.0.1:8080
+[Fri Jun  5 22:44:45 2026] PHP 8.3.6 Development Server (http://127.0.0.1:8080) started
+[Fri Jun  5 22:44:51 2026] 127.0.0.1:48350 Accepted
+[Fri Jun  5 22:44:52 2026] 127.0.0.1:48350 Closing
+[Fri Jun  5 22:44:52 2026] 127.0.0.1:48352 Accepted
+[Fri Jun  5 22:44:52 2026] 127.0.0.1:48352 [200]: GET /css/app.css
+[Fri Jun  5 22:44:52 2026] 127.0.0.1:48352 Closing
+[Fri Jun  5 22:44:53 2026] 127.0.0.1:48366 Accepted
+[Fri Jun  5 22:44:53 2026] 127.0.0.1:48366 Closing
+[Fri Jun  5 22:44:53 2026] 127.0.0.1:48374 Accepted
+[Fri Jun  5 22:44:53 2026] 127.0.0.1:48374 [200]: GET /css/app.css
+[Fri Jun  5 22:44:53 2026] 127.0.0.1:48374 Closing
+[Fri Jun  5 22:44:54 2026] 127.0.0.1:48388 Accepted
+[Fri Jun  5 22:44:54 2026] 127.0.0.1:48388 Closing
+[Fri Jun  5 22:44:54 2026] 127.0.0.1:48396 Accepted
+[Fri Jun  5 22:44:54 2026] 127.0.0.1:48396 [200]: GET /css/app.css
+[Fri Jun  5 22:44:54 2026] 127.0.0.1:48396 Closing
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48400 Accepted
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48400 Closing
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48404 Accepted
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48404 Closing
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48410 Accepted
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48414 Accepted
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48410 [200]: GET /js/app.js
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48414 [200]: GET /css/app.css
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48414 Closing
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48410 Closing
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48428 Accepted
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48428 Closing
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48432 Accepted
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48432 Closing
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48436 Accepted
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48436 [200]: GET /css/app.css
+[Fri Jun  5 22:44:55 2026] 127.0.0.1:48436 Closing
+[Fri Jun  5 22:44:56 2026] 127.0.0.1:48442 Accepted
+[Fri Jun  5 22:44:56 2026] 127.0.0.1:48442 Closing
+[Fri Jun  5 22:44:56 2026] 127.0.0.1:48452 Accepted
+[Fri Jun  5 22:44:56 2026] 127.0.0.1:48452 [200]: GET /css/app.css
+[Fri Jun  5 22:44:56 2026] 127.0.0.1:48452 Closing
+[Fri Jun  5 22:44:56 2026] 127.0.0.1:48456 Accepted
+[Fri Jun  5 22:44:57 2026] 127.0.0.1:48456 Closing
+[Fri Jun  5 22:49:04 2026] 127.0.0.1:53882 Accepted
+[Fri Jun  5 22:49:04 2026] 127.0.0.1:53882 Closing
+[Fri Jun  5 22:49:04 2026] 127.0.0.1:53894 Accepted
+[Fri Jun  5 22:49:04 2026] 127.0.0.1:53894 [200]: GET /css/app.css
+[Fri Jun  5 22:49:04 2026] 127.0.0.1:53894 Closing
+[Fri Jun  5 22:49:05 2026] 127.0.0.1:53906 Accepted
+[Fri Jun  5 22:49:05 2026] 127.0.0.1:53906 Closing
+[Fri Jun  5 22:49:05 2026] 127.0.0.1:53922 Accepted
+[Fri Jun  5 22:49:05 2026] 127.0.0.1:53922 [200]: GET /css/app.css
+[Fri Jun  5 22:49:05 2026] 127.0.0.1:53922 Closing
+[Fri Jun  5 22:49:06 2026] 127.0.0.1:53934 Accepted
+[Fri Jun  5 22:49:06 2026] 127.0.0.1:53934 Closing
+[Fri Jun  5 22:49:06 2026] 127.0.0.1:53936 Accepted
+[Fri Jun  5 22:49:06 2026] 127.0.0.1:53936 [200]: GET /css/app.css
+[Fri Jun  5 22:49:06 2026] 127.0.0.1:53936 Closing
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53944 Accepted
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53944 Closing
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53952 Accepted
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53952 Closing
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53964 Accepted
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53970 Accepted
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53970 [200]: GET /css/app.css
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53970 Closing
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53964 [200]: GET /js/app.js
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53964 Closing
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53980 Accepted
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53980 Closing
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53984 Accepted
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53984 Closing
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53986 Accepted
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53986 [200]: GET /css/app.css
+[Fri Jun  5 22:49:07 2026] 127.0.0.1:53986 Closing
+[Fri Jun  5 22:49:08 2026] 127.0.0.1:53996 Accepted
+[Fri Jun  5 22:49:08 2026] 127.0.0.1:53996 Closing
+[Fri Jun  5 22:49:08 2026] 127.0.0.1:54000 Accepted
+[Fri Jun  5 22:49:08 2026] 127.0.0.1:54000 [200]: GET /css/app.css
+[Fri Jun  5 22:49:08 2026] 127.0.0.1:54000 Closing
+[Fri Jun  5 22:49:08 2026] 127.0.0.1:54014 Accepted
+[Fri Jun  5 22:49:08 2026] 127.0.0.1:54014 Closing

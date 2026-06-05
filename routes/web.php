@@ -34,6 +34,28 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/shop', function () {
+    $products = \App\Models\Product::latest()->paginate(12);
+    return view('shop', compact('products'));
+})->name('shop');
+
+Route::get('/product/{id}', function ($id) {
+    $product = \App\Models\Product::findOrFail($id);
+    return view('product_detail', compact('product'));
+})->name('product.show');
+
+Route::get('/cart', function () {
+    return view('cart');
+})->name('cart');
+
+Route::get('/checkout', function () {
+    return "<h1>شبیه سازی پرداخت</h1><p>این یک شبیه سازی است. سفارش شما با موفقیت ثبت شد.</p><a href='/'>بازگشت به فروشگاه</a>";
+})->name('checkout');
+
+Route::get('/profile', function () {
+    return view('profile');
+})->middleware('auth')->name('profile');
+
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminUser']], function () {
     Route::get("/", function () {
