@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        Hekmatinasser\Verta\VertaServiceProvider::class,
+        Hekmatinasser\Verta\Laravel\VertaServiceProvider::class,
     ],
 
     /*

@@ -1,60 +1,45 @@
-@extends('admin.admin')
-@section('title','دسته بندی محصولات')
+@extends('layouts.admin_tailwind')
+
+@section('title', 'مدیریت دسته‌بندی‌ها')
+
 @section('content')
-    <div class="row">
-        <div class="col-sm-3">
-            <form action="{{route("category.store")}}" method="post" enctype="multipart/form-data">
-                @csrf
-                <fieldset class="form-group mb-3">
-                    <label>نام</label>
-                    <input class="form-control" name="category_name" placeholder="نام را وارد کنید ..." required>
-                </fieldset>
-                <fieldset class="form-group mb-3">
-                    <label>عکس</label>
-                    <input class="form-control" type="file" name="category_photo" placeholder="عکس را وارد کنید ..." required>
-                </fieldset>
-                <div class="d-grid gap-2">
-                    <input type="submit" value="افزودن دسته بندی" class="btn btn-primary">
-                </div>
-            </form>
-        </div>
-        <div class="col-sm-9">
-            @if(count($categories)>0)
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>نام</th>
-                        <th>عکس</th>
-                        <th>ساخته شده در</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($categories as $category)
-                        <tr>
-                            <td>{{$category->id}}</td>
-                            <td><a href="{{route('category.show',$category->id)}}">{{$category->name}}</a></td>
-                            <td>
-                                <img
-                                    width="100"
-                                    src="{{env('APP_URL')."storage/".$category->photo->path}}"
-                                    alt="">
-                            </td>
-                            <td>{{$category->created_at}}</td>
-                            <td>
-                                <form action="{{route('category.destroy',$category->id)}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="submit" class="btn btn-danger" value="حذف">
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            @else
-                <p>دسته بندی ای برای نمایش وجود ندارد :-(</p>
-            @endif
-        </div>
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+        <h4 class="text-lg font-semibold text-gray-800">لیست دسته‌بندی‌ها</h4>
+        <a href="{{ route('category.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+            افزودن دسته‌بندی جدید
+        </a>
     </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-right">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">نام دسته‌بندی</th>
+                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">زیرمجموعه‌ها</th>
+                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">عملیات</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach($categories as $category)
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $category->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ $category->subCategories->count() }} زیرمجموعه
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-3 space-x-reverse">
+                            <a href="{{ route('category.edit', $category->id) }}" class="text-indigo-600 hover:text-indigo-900">ویرایش</a>
+                            <form action="{{ route('category.destroy', $category->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('آیا مطمئن هستید؟')">حذف</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection
