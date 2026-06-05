@@ -97,7 +97,7 @@ php artisan serve
 
 <div dir="ltr">
 
-# 🛒 Danialkala - Multi-Platform E-commerce Ecosystem (English)
+# 🛒 Danialkala - Multi-Platform E-commerce Ecosystem
 
 **Danialkala** is a comprehensive, modern e-commerce solution built with Laravel. It features a robust API backend serving mobile applications, a highly responsive and beautiful Web Storefront, and a professional Admin Dashboard—all designed with **Tailwind CSS** and optimized for Persian users with the **Vazirmatn** font.
 
