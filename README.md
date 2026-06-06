@@ -37,6 +37,16 @@
 
 ---
 
+
+## 📸 گالری تصاویر
+
+### پنل مدیریت
+![Admin Dashboard](./public/screenshots/admin-dashboard.png)
+
+### فروشگاه تحت وب
+![Web Storefront](./public/screenshots/storefront-home.png)
+
+
 ## 🛠️ راهنمای نصب و راه‌اندازی
 
 ### روش اول: استفاده از Docker (سریع‌ترین روش) 🐳
@@ -84,15 +94,6 @@ php artisan serve
 - **کاربر عادی:** `user@danialkala.com` / `password`
 
 ---
-
-## 📸 گالری تصاویر
-
-### پنل مدیریت
-![Admin Dashboard](./public/screenshots/admin-dashboard.png)
-
-### فروشگاه تحت وب
-![Web Storefront](./public/screenshots/storefront-home.png)
-
 ---
 
 <div dir="ltr">
