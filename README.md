@@ -93,7 +93,7 @@ php artisan serve
 - **مدیر سیستم:** `admin@danialkala.com` / `password`
 - **کاربر عادی:** `user@danialkala.com` / `password`
 
----
+
 ---
 
 <div dir="ltr">
