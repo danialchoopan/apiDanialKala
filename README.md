@@ -62,8 +62,8 @@ docker-compose exec app php artisan migrate:fresh --seed
 ### روش دوم: نصب دستی
 ۱. پروژه را کلون کنید:
 ```bash
-git clone https://github.com/your-username/danialkala.git
-cd danialkala
+git clone https://github.com/danialchoopan/ApiDanialkala.git
+cd ApiDanialkala
 ```
 ۲. وابستگی‌های PHP را نصب کنید:
 ```bash
